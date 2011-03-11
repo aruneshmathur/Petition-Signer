@@ -38,11 +38,8 @@ public class List extends Activity {
 		database.open();
 		petition = database.getPetitions();
 		database.close();
-		
-		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		final TextView titleView = (TextView) findViewById(R.id.title);
-		
+		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		ListView petitionList = (ListView) findViewById(R.id.petitionlist);
 
 		petitionList.setAdapter(new PetitionListViewAdapter(this));
@@ -73,7 +70,8 @@ public class List extends Activity {
 		}
 
 		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView,
+				ViewGroup parent) {
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.petitiontextview, null);
@@ -90,13 +88,16 @@ public class List extends Activity {
 
 			holder.no_of_signatures.setText(petition.get(position).get(
 					Petition_Details_db.KEY_PETITION_SIGNED));
-			
+
 			convertView.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View arg0) {
-					Intent intent = new Intent(List.this,PetitioneeList.class);
-					intent.putExtra("PetitionID", petition.get(position).get(Petition_Details_db.KEY_PETITION_ID));
+					Intent intent = new Intent(List.this, PetitioneeList.class);
+					intent.putExtra(
+							"PetitionID",
+							petition.get(position).get(
+									Petition_Details_db.KEY_PETITION_ID));
 					startActivity(intent);
 				}
 			});

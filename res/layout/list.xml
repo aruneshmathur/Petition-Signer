@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<TextView android:layout_width="fill_parent" android:id="@+id/title"
-		android:layout_height="wrap_content" android:text="Petition List"
-		android:textSize="25dip" android:background="#F0F8FF" android:padding="10dip"
-		android:gravity="center" android:textColor="#000000"
-		android:drawableLeft="@drawable/pad2" />
+	<ImageView android:layout_width="fill_parent" android:id="@+id/strip"
+		android:layout_height="wrap_content" android:src="@drawable/colorstrip" />
+	<TextView android:layout_width="fill_parent" android:id="@+id/head"
+		android:layout_height="50dip" android:text=" Petition List"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:textColor="#FFFFFF" android:background="#000000"
+		android:gravity="center_vertical" />
+
 	<ListView android:id="@+id/petitionlist" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" />
+		android:layout_height="fill_parent" android:listSelector="@drawable/list_view_selector" />
 
 </LinearLayout>

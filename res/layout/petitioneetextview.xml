@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="#EFEFEF">
 
 	<TextView android:id="@+id/petitioneeName"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:paddingTop="10dip" />
 
-	<TextView android:id="@+id/petitioneeEmail" android:layout_below="@id/petitioneeName"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceMedium"
+	<TextView android:id="@+id/petitioneeEmail"
+		android:layout_below="@id/petitioneeName" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:text="Email:" android:paddingBottom="10dip" />
 
 </RelativeLayout>
