@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:background="#EFEFEF">
+	<TextView android:layout_width="fill_parent" android:id="@+id/head"
+		android:layout_height="50dip" android:text=" New Petition"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:textColor="#FFFFFF" android:background="#4a71c6"
+		android:gravity="center_vertical" android:layout_alignParentTop="true" />
+
+	<LinearLayout android:layout_width="fill_parent"
+		android:id="@+id/bottom_bar" android:layout_height="wrap_content"
+		android:background="#848684" android:layout_alignParentBottom="true">
+		<Button android:text="Done" android:layout_width="fill_parent"
+			android:id="@+id/done" android:layout_margin="2dip" 
+			android:layout_height="wrap_content" android:layout_weight="1" />
+		<Button android:text="Clear" android:layout_width="fill_parent"
+			android:layout_margin="2dip" android:layout_height="wrap_content"
+			android:layout_weight="1" />
+	</LinearLayout>
+
+	<ScrollView android:layout_width="fill_parent" android:id="@+id/content"
+		android:layout_height="fill_parent" android:layout_below="@id/head"
+		android:layout_above="@id/bottom_bar">
+
+		<LinearLayout android:layout_width="fill_parent"
+			android:id="@+id/content" android:layout_height="wrap_content"
+			android:orientation="vertical" android:paddingTop="20dip">
+			<EditText android:layout_width="fill_parent" android:tag="petitionTitle"
+				android:layout_height="wrap_content" android:inputType="textCapSentences"
+				android:layout_margin="5dip" android:hint="Title" />
+			<EditText android:layout_width="fill_parent" android:hint="Summary"
+				android:layout_margin="5dip" android:tag="petitionSummary"
+				android:layout_height="wrap_content" android:inputType="textCapSentences" />
+			<EditText android:layout_width="fill_parent" android:hint="Web"
+				android:layout_margin="5dip" android:tag="petitionWeb"
+				android:layout_height="wrap_content" android:inputType="textUri" />
+			<EditText android:layout_width="fill_parent" android:hint="Country"
+				android:layout_margin="5dip" android:tag="petitionCountry"
+				android:layout_height="wrap_content" android:inputType="textCapSentences" />
+
+		</LinearLayout>
+	</ScrollView>
+</RelativeLayout>
