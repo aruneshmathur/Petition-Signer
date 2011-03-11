@@ -2,29 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:orientation="vertical"
 	android:layout_height="fill_parent">
+	<ImageView android:layout_width="fill_parent" android:id="@+id/strip"
+		android:layout_height="wrap_content" android:src="@drawable/colorstrip"
+		android:layout_alignParentTop="true" />
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="50dip" android:text=" Petition Signer"
 		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:textColor="#FFFFFF" android:background="#4a71c6"
-		android:gravity="center_vertical" />
+		android:textColor="#FFFFFF" android:background="#000000"
+		android:layout_below="@id/strip" android:gravity="center_vertical" />
 
 
 	<LinearLayout android:layout_width="fill_parent"
-		android:background="#E7eBFF" android:orientation="vertical"
+		android:background="#EFEFEF" android:orientation="vertical"
 		android:layout_height="fill_parent">
 		<LinearLayout android:layout_width="fill_parent"
 			android:orientation="horizontal" android:layout_height="wrap_content"
 			android:layout_weight="1">
 			<Button android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:text="Create Petition"
-				android:drawableTop="@drawable/create_petition"
+				android:drawableTop="@drawable/create"
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:textStyle="bold" android:background="@null"
 				android:layout_weight="1" android:layout_gravity="center_vertical"
 				android:tag="Create" android:onClick="onClick" />
 			<Button android:layout_width="fill_parent" android:textStyle="bold"
 				android:layout_height="wrap_content" android:text="View Petition"
-				android:drawableTop="@drawable/view_petition"
+				android:drawableTop="@drawable/sign"
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:background="@null" android:layout_weight="1"
 				android:layout_gravity="center_vertical" android:tag="View"
@@ -34,8 +37,8 @@
 			android:layout_height="wrap_content" android:orientation="horizontal"
 			android:layout_weight="1">
 			<Button android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:text="Mail Petition"
-				android:drawableTop="@drawable/mail_petition"
+				android:layout_height="wrap_content" android:text="Share"
+				android:drawableTop="@drawable/share"
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:background="@null" android:layout_weight="1"
 				android:layout_gravity="center_vertical" android:textStyle="bold"
