@@ -10,25 +10,33 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class List extends Activity {
 
-	ArrayList<HashMap<String, String>> petition;
-	LayoutInflater inflater;
-	boolean touched = false;
+	ArrayList<HashMap<String, String>> mPetition;
+	LayoutInflater mInflater;
 	Petition_Details_db database;
+	ListView mPetitionList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,32 +44,57 @@ public class List extends Activity {
 		setContentView(R.layout.list);
 		database = new Petition_Details_db(this);
 		database.open();
-		petition = database.getPetitions();
-		database.close();
+		mPetition = database.getPetitions();
 
-		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		ListView petitionList = (ListView) findViewById(R.id.petitionlist);
+		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		mPetitionList = (ListView) findViewById(R.id.petitionlist);
 
-		petitionList.setAdapter(new PetitionListViewAdapter(this));
+		mPetitionList.setAdapter(new PetitionListViewAdapter());
+
+		registerForContextMenu(mPetitionList);
 
 	}
 
-	private class PetitionListViewAdapter extends BaseAdapter {
-		Context context;
-		ViewHolder holder;
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		if (v.getId() == R.id.petitionlist) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			menu.setHeaderTitle(mPetition.get(info.position).get(
+					Petition_Details_db.KEY_PETITION_TITLE));
 
-		public PetitionListViewAdapter(Context context) {
-			this.context = context;
+			menu.add(Menu.NONE, 0, 0, "Delete");
+			menu.add(Menu.NONE, 1, 1, "Synch");
+
 		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+				.getMenuInfo();
+		int menuItemIndex = item.getItemId();
+		if (menuItemIndex == 0) {
+			HashMap<String, String> map = mPetition.get(info.position);
+			String pid=map.get(
+					Petition_Details_db.KEY_PETITION_ID);
+			database.deletePetition(pid);
+		}
+
+		return true;
+	}
+
+	private class PetitionListViewAdapter extends BaseAdapter {
+		ViewHolder mHolder;
 
 		@Override
 		public int getCount() {
-			return petition.size();
+			return mPetition.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return petition.get(position);
+			return mPetition.get(position);
 		}
 
 		@Override
@@ -73,20 +106,21 @@ public class List extends Activity {
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
 			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = inflater.inflate(R.layout.petitiontextview, null);
-				holder.petitionTitle = (TextView) convertView
+				mHolder = new ViewHolder();
+				convertView = mInflater
+						.inflate(R.layout.petitiontextview, null);
+				mHolder.petitionTitle = (TextView) convertView
 						.findViewById(R.id.petitiontitle);
 
-				holder.no_of_signatures = (TextView) convertView
+				mHolder.no_of_signatures = (TextView) convertView
 						.findViewById(R.id.number_of_signatures);
-				convertView.setTag(holder);
+				convertView.setTag(mHolder);
 			}
 
-			holder.petitionTitle.setText(petition.get(position).get(
+			mHolder.petitionTitle.setText(mPetition.get(position).get(
 					Petition_Details_db.KEY_PETITION_TITLE));
 
-			holder.no_of_signatures.setText(petition.get(position).get(
+			mHolder.no_of_signatures.setText(mPetition.get(position).get(
 					Petition_Details_db.KEY_PETITION_SIGNED));
 
 			convertView.setOnClickListener(new OnClickListener() {
@@ -96,11 +130,21 @@ public class List extends Activity {
 					Intent intent = new Intent(List.this, PetitioneeList.class);
 					intent.putExtra(
 							"PetitionID",
-							petition.get(position).get(
+							mPetition.get(position).get(
 									Petition_Details_db.KEY_PETITION_ID));
+					database.close();
 					startActivity(intent);
 				}
 			});
+
+			convertView.setOnLongClickListener(new OnLongClickListener() {
+
+				@Override
+				public boolean onLongClick(View arg0) {
+					return false;
+				}
+			});
+
 			return convertView;
 		}
 
@@ -109,5 +153,11 @@ public class List extends Activity {
 			TextView no_of_signatures;
 		}
 
+	}
+
+	@Override
+	public void onDestroy() {
+		database.close();
+		super.onDestroy();
 	}
 }

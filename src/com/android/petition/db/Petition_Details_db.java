@@ -46,9 +46,9 @@ public class Petition_Details_db implements Serializable {
 			+ " TEXT, " + KEY_PETITION_COMPLETED + " INTEGER" + ");";
 
 	private static String DB_CREATE2 = "CREATE TABLE " + TABLE_NAME2 + " ( "
-			+ KEY_PETITION_ID + " TEXT, " + KEY_PETITION_SIGNEE_ID
-			+ " TEXT, " + KEY_PETITION_SIGNEE_NAME
-			+ " TEXT NOT NULL, " + KEY_PETITION_SIGNEE_IMPORTANCE + " TEXT, "
+			+ KEY_PETITION_ID + " TEXT, " + KEY_PETITION_SIGNEE_ID + " TEXT, "
+			+ KEY_PETITION_SIGNEE_NAME + " TEXT NOT NULL, "
+			+ KEY_PETITION_SIGNEE_IMPORTANCE + " TEXT, "
 			+ KEY_PETITION_SIGNEE_EMAIL + " TEXT, "
 			+ KEY_PETITION_SIGNEE_CONTACT + " TEXT" + ");";
 
@@ -99,12 +99,13 @@ public class Petition_Details_db implements Serializable {
 
 		while (cursor.moveToNext()) {
 			returnMap = new HashMap<String, String>();
+			returnMap.put(KEY_PETITION_ID, cursor.getString(0));
 			returnMap.put(KEY_PETITION_TITLE, cursor.getString(1));
 			returnMap.put(KEY_PETITION_SIGNED, cursor.getString(2));
 			returnMap.put(KEY_PETITION_COMPLETED, cursor.getString(3));
 			list.add(returnMap);
 		}
-		
+
 		cursor.close();
 		return list;
 	}
@@ -146,9 +147,15 @@ public class Petition_Details_db implements Serializable {
 			returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(5));
 			list.add(returnMap);
 		}
-		
+
 		cursor.close();
 		return list;
+	}
+
+	public void deletePetition(String id) {
+		String query = "DELETE FROM " + TABLE_NAME1 + " WHERE "
+				+ KEY_PETITION_ID + " = " + id;
+		db.execSQL(query);
 	}
 
 	private static class myDbHelper extends SQLiteOpenHelper {
