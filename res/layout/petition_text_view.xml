@@ -4,21 +4,21 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:background="@drawable/list_view_selector">
 
-	<TextView android:id="@+id/petitiontitle"
+	<TextView android:id="@+id/petitionTitle"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:textColor="#000000" android:paddingTop="10dip" />
+		android:textColor="@color/black" android:paddingTop="10dip" />
 
-	<TextView android:id="@+id/signedby" android:layout_below="@id/petitiontitle"
+	<TextView android:id="@+id/petitionSigned" android:layout_below="@id/petitionTitle"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:textColor="#000000" android:text="Signed By:"
+		android:textColor="@color/black" android:text="Signed By:"
 		android:paddingBottom="10dip" />
 
 	<TextView android:id="@+id/number_of_signatures"
-		android:layout_below="@id/petitiontitle" android:layout_toRightOf="@id/signedby"
+		android:layout_below="@id/petitionTitle" android:layout_toRightOf="@id/petitionSigned"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:textColor="#000000" android:paddingLeft="30dip"
+		android:textColor="@color/black" android:paddingLeft="30dip"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingBottom="10dip" />
 

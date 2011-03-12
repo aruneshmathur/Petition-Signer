@@ -1,10 +1,7 @@
 package com.android.petition;
 
-import java.util.Currency;
 import java.util.HashMap;
-
 import com.android.petition.db.Petition_Details_db;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +17,7 @@ public class Signee extends Activity {
 	@Override
 	public void onCreate(Bundle b) {
 		super.onCreate(b);
-		setContentView(R.layout.petition_signee_main);
+		setContentView(R.layout.signee_create);
 
 		Intent intent = getIntent();
 		final String pid = intent.getStringExtra("PetitionID");

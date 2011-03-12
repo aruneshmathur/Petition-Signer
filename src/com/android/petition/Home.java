@@ -23,7 +23,7 @@ public class Home extends Activity {
 			startActivityForResult(intent, Activity.RESULT_OK);
 		}
 		if (((String) v.getTag()).equals("View")) {
-			Intent intent = new Intent(getApplication(), List.class);
+			Intent intent = new Intent(getApplication(), PetitionList.class);
 			startActivityForResult(intent, Activity.RESULT_OK);
 
 		}

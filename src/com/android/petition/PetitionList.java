@@ -31,7 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class List extends Activity {
+public class PetitionList extends Activity {
 
 	ArrayList<HashMap<String, String>> mPetition;
 	LayoutInflater mInflater;
@@ -41,7 +41,7 @@ public class List extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list);
+		setContentView(R.layout.petition_list);
 		database = new Petition_Details_db(this);
 		database.open();
 		mPetition = database.getPetitions();
@@ -112,9 +112,9 @@ public class List extends Activity {
 			if (convertView == null) {
 				mHolder = new ViewHolder();
 				convertView = mInflater
-						.inflate(R.layout.petitiontextview, null);
+						.inflate(R.layout.petition_text_view, null);
 				mHolder.petitionTitle = (TextView) convertView
-						.findViewById(R.id.petitiontitle);
+						.findViewById(R.id.petitionTitle);
 
 				mHolder.no_of_signatures = (TextView) convertView
 						.findViewById(R.id.number_of_signatures);
@@ -131,7 +131,7 @@ public class List extends Activity {
 
 				@Override
 				public void onClick(View arg0) {
-					Intent intent = new Intent(List.this, PetitioneeList.class);
+					Intent intent = new Intent(PetitionList.this, SigneeList.class);
 					intent.putExtra(
 							"PetitionID",
 							mPetition.get(position).get(

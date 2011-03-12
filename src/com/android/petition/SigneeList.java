@@ -4,46 +4,43 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.android.petition.db.Petition_Details_db;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class PetitioneeList extends Activity {
+public class SigneeList extends Activity {
 
-	ArrayList<HashMap<String, String>> petioneeList = null;
-	LayoutInflater inflater;
+	ArrayList<HashMap<String, String>> mSigneeData = null;
+	LayoutInflater mInflater;
 	ListView mPetitioneeListView;
 	static final int ADD = 1;
 	Petition_Details_db database;
-	String pid = null;;
+	String mPid = null;
 
 	@Override
 	public void onCreate(Bundle b) {
 		super.onCreate(b);
-		setContentView(R.layout.petition_list_main);
+		setContentView(R.layout.signee_list);
 
-		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		Intent intent = this.getIntent();
-		pid = intent.getStringExtra("PetitionID");
+		mPid = intent.getStringExtra("PetitionID");
 
-		mPetitioneeListView = (ListView) findViewById(R.id.petitioneeList);
+		mPetitioneeListView = (ListView) findViewById(R.id.signeeList);
 
 		database = new Petition_Details_db(getApplicationContext());
 		database.open();
 
-		petioneeList = database.getPetioneeList(pid);
+		mSigneeData = database.getPetioneeList(mPid);
 		database.close();
 
 		ImageButton add = (ImageButton) findViewById(R.id.add_signee);
@@ -51,8 +48,8 @@ public class PetitioneeList extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(PetitioneeList.this, Signee.class);
-				intent.putExtra("PetitionID", pid);
+				Intent intent = new Intent(SigneeList.this, Signee.class);
+				intent.putExtra("PetitionID", mPid);
 				startActivityForResult(intent, ADD);
 			}
 		});
@@ -62,16 +59,16 @@ public class PetitioneeList extends Activity {
 	}
 
 	private class PetitionListViewAdapter extends BaseAdapter {
-		ViewHolder holder;
+		ViewHolder mHolder;
 
 		@Override
 		public int getCount() {
-			return petioneeList.size();
+			return mSigneeData.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return petioneeList.get(position);
+			return mSigneeData.get(position);
 		}
 
 		@Override
@@ -83,21 +80,21 @@ public class PetitioneeList extends Activity {
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
 			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = inflater.inflate(R.layout.petitioneetextview,
-						null);
-				holder.petitioneeName = (TextView) convertView
-						.findViewById(R.id.petitioneeName);
+				mHolder = new ViewHolder();
+				convertView = mInflater
+						.inflate(R.layout.signee_text_view, null);
+				mHolder.petitioneeName = (TextView) convertView
+						.findViewById(R.id.signeeName);
 
-				holder.email = (TextView) convertView
-						.findViewById(R.id.petitioneeEmail);
-				convertView.setTag(holder);
+				mHolder.email = (TextView) convertView
+						.findViewById(R.id.signeeEmail);
+				convertView.setTag(mHolder);
 			}
 
-			holder.petitioneeName.setText(petioneeList.get(position).get(
+			mHolder.petitioneeName.setText(mSigneeData.get(position).get(
 					Petition_Details_db.KEY_PETITION_SIGNEE_NAME));
 
-			holder.email.setText(petioneeList.get(position).get(
+			mHolder.email.setText(mSigneeData.get(position).get(
 					Petition_Details_db.KEY_PETITION_SIGNEE_EMAIL));
 
 			convertView.setOnLongClickListener(new OnLongClickListener() {
@@ -126,7 +123,7 @@ public class PetitioneeList extends Activity {
 				String signeeId = data
 						.getStringExtra(Petition_Details_db.KEY_PETITION_SIGNEE_ID);
 				database.open();
-				petioneeList.add(database.getSignee(pid, signeeId));
+				mSigneeData.add(database.getSignee(mPid, signeeId));
 				((PetitionListViewAdapter) mPetitioneeListView.getAdapter())
 						.notifyDataSetChanged();
 				database.close();
