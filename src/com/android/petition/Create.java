@@ -14,18 +14,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class Create extends Activity {
+
+	Button mDoneButton;
+	Button mClearButton;
+	EditText mText;
+
 	@Override
 	public void onCreate(Bundle b) {
 		super.onCreate(b);
 		setContentView(R.layout.create);
 
-		Button doneButton = (Button) findViewById(R.id.done);
+		mDoneButton = (Button) findViewById(R.id.done);
+		mClearButton = (Button) findViewById(R.id.clear);
+
 		final HashMap<String, String> sendMap = new HashMap<String, String>();
 		final Petition_Details_db database = new Petition_Details_db(
 				getApplicationContext());
 		database.open();
 
-		doneButton.setOnClickListener(new OnClickListener() {
+		mDoneButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -40,6 +47,18 @@ public class Create extends Activity {
 
 				database.insertPetition(sendMap);
 				finish();
+			}
+		});
+
+		mClearButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				LinearLayout layout = (LinearLayout) findViewById(R.id.content);
+				for (int i = 0; i < layout.getChildCount(); i++) {
+					mText = (EditText) layout.getChildAt(i);
+					mText.setText("");
+				}
 			}
 		});
 

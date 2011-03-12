@@ -30,21 +30,22 @@ public final class R {
         public static final int sign=0x7f02000b;
     }
     public static final class id {
-        public static final int add_signee=0x7f060006;
+        public static final int add_signee=0x7f060007;
         public static final int bottom_bar=0x7f060002;
-        public static final int content=0x7f060004;
+        public static final int clear=0x7f060004;
+        public static final int content=0x7f060005;
         public static final int done=0x7f060003;
         public static final int head=0x7f060001;
-        public static final int number_of_signatures=0x7f06000e;
-        public static final int petioneeList=0x7f060007;
-        public static final int petitioneeEmail=0x7f06000b;
-        public static final int petitioneeName=0x7f06000a;
-        public static final int petitionlist=0x7f060005;
-        public static final int petitiontitle=0x7f06000c;
-        public static final int sign=0x7f060009;
-        public static final int signedby=0x7f06000d;
+        public static final int number_of_signatures=0x7f06000f;
+        public static final int petioneeList=0x7f060008;
+        public static final int petitioneeEmail=0x7f06000c;
+        public static final int petitioneeName=0x7f06000b;
+        public static final int petitionlist=0x7f060006;
+        public static final int petitiontitle=0x7f06000d;
+        public static final int sign=0x7f06000a;
+        public static final int signedby=0x7f06000e;
         public static final int strip=0x7f060000;
-        public static final int subLayout=0x7f060008;
+        public static final int subLayout=0x7f060009;
     }
     public static final class layout {
         public static final int create=0x7f030000;
