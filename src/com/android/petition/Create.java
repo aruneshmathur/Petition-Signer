@@ -44,6 +44,8 @@ public class Create extends Activity {
 				}
 				sendMap.put(Petition_Details_db.KEY_PETITION_COMPLETED, "-1");
 				sendMap.put(Petition_Details_db.KEY_PETITION_SIGNED, "0");
+				sendMap.put(Petition_Details_db.KEY_PETITION_ID,
+						String.valueOf(System.currentTimeMillis()));
 
 				database.insertPetition(sendMap);
 				finish();

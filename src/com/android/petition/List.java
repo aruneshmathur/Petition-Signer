@@ -77,10 +77,12 @@ public class List extends Activity {
 		if (menuItemIndex == 0) {
 			HashMap<String, String> map = mPetition.get(info.position);
 			String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
+			database.open();
 			database.deletePetition(pid);
 			mPetition.remove(info.position);
 			((PetitionListViewAdapter) mPetitionList.getAdapter())
 					.notifyDataSetChanged();
+			database.close();
 		}
 
 		return true;
@@ -158,8 +160,12 @@ public class List extends Activity {
 	}
 
 	@Override
-	public void onDestroy() {
+	public void onResume() {
+		super.onResume();
+		database.open();
+		mPetition = database.getPetitions();
+		((PetitionListViewAdapter) mPetitionList.getAdapter())
+				.notifyDataSetChanged();
 		database.close();
-		super.onDestroy();
 	}
 }

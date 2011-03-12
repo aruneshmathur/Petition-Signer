@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
 public class Petition_Details_db implements Serializable {
 
-	public static int DB_VERSION = 3;
+	public static int DB_VERSION = 1;
 
 	public static String DB_NAME = "petition.db";
 	public static String TABLE_NAME1 = "newpetition";
@@ -39,11 +39,11 @@ public class Petition_Details_db implements Serializable {
 	public static String KEY_PETITION_SIGNEE_CONTACT = "signeeContact";
 
 	private static String DB_CREATE1 = "CREATE TABLE " + TABLE_NAME1 + " ( "
-			+ KEY_PETITION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ KEY_PETITION_TITLE + " TEXT NOT NULL, " + KEY_PETITION_SUMMARY
-			+ " TEXT NOT NULL, " + KEY_PETITION_WEB + " TEXT, "
-			+ KEY_PETITION_COUNTRY + " TEXT, " + KEY_PETITION_SIGNED
-			+ " TEXT, " + KEY_PETITION_COMPLETED + " INTEGER" + ");";
+			+ KEY_PETITION_ID + " INTEGER PRIMARY KEY, " + KEY_PETITION_TITLE
+			+ " TEXT NOT NULL, " + KEY_PETITION_SUMMARY + " TEXT NOT NULL, "
+			+ KEY_PETITION_WEB + " TEXT, " + KEY_PETITION_COUNTRY + " TEXT, "
+			+ KEY_PETITION_SIGNED + " TEXT, " + KEY_PETITION_COMPLETED
+			+ " INTEGER" + ");";
 
 	private static String DB_CREATE2 = "CREATE TABLE " + TABLE_NAME2 + " ( "
 			+ KEY_PETITION_ID + " TEXT, " + KEY_PETITION_SIGNEE_ID + " TEXT, "
@@ -94,7 +94,7 @@ public class Petition_Details_db implements Serializable {
 
 		String query_get = "SELECT " + KEY_PETITION_ID + " , "
 				+ KEY_PETITION_TITLE + " , " + KEY_PETITION_SIGNED + " , "
-				+ KEY_PETITION_COMPLETED + " FROM " + TABLE_NAME1;
+				+ KEY_PETITION_COMPLETED + " FROM " + TABLE_NAME1 + ";";
 		Cursor cursor = db.rawQuery(query_get, null);
 
 		while (cursor.moveToNext()) {
@@ -103,6 +103,17 @@ public class Petition_Details_db implements Serializable {
 			returnMap.put(KEY_PETITION_TITLE, cursor.getString(1));
 			returnMap.put(KEY_PETITION_SIGNED, cursor.getString(2));
 			returnMap.put(KEY_PETITION_COMPLETED, cursor.getString(3));
+
+			query_get = "SELECT COUNT(" + KEY_PETITION_ID + ") FROM "
+					+ TABLE_NAME2 + " WHERE " + KEY_PETITION_ID + " = "
+					+ returnMap.get(KEY_PETITION_ID) + ";";
+
+			Cursor cursor1 = db.rawQuery(query_get, null);
+			cursor1.moveToNext();
+			String s=cursor1.getString(0);
+			returnMap.put(KEY_PETITION_SIGNED, s);
+			cursor1.close();
+
 			list.add(returnMap);
 		}
 
@@ -140,11 +151,11 @@ public class Petition_Details_db implements Serializable {
 
 		while (cursor.moveToNext()) {
 			returnMap = new HashMap<String, String>();
-			returnMap.put(KEY_PETITION_SIGNEE_ID, cursor.getString(1));
-			returnMap.put(KEY_PETITION_SIGNEE_NAME, cursor.getString(2));
-			returnMap.put(KEY_PETITION_SIGNEE_IMPORTANCE, cursor.getString(3));
-			returnMap.put(KEY_PETITION_SIGNEE_ID, cursor.getString(4));
-			returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(5));
+			returnMap.put(KEY_PETITION_SIGNEE_ID, cursor.getString(0));
+			returnMap.put(KEY_PETITION_SIGNEE_NAME, cursor.getString(1));
+			returnMap.put(KEY_PETITION_SIGNEE_IMPORTANCE, cursor.getString(2));
+			returnMap.put(KEY_PETITION_SIGNEE_EMAIL, cursor.getString(3));
+			returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(4));
 			list.add(returnMap);
 		}
 
@@ -152,10 +163,37 @@ public class Petition_Details_db implements Serializable {
 		return list;
 	}
 
+	public HashMap<String, String> getSignee(String pid, String signeeId) {
+		HashMap<String, String> returnMap = null;
+
+		String query_get = "SELECT " + KEY_PETITION_SIGNEE_ID + " , "
+				+ KEY_PETITION_SIGNEE_NAME + " , "
+				+ KEY_PETITION_SIGNEE_IMPORTANCE + " , "
+				+ KEY_PETITION_SIGNEE_EMAIL + " , "
+				+ KEY_PETITION_SIGNEE_CONTACT + " FROM " + TABLE_NAME2
+				+ " WHERE " + KEY_PETITION_ID + " = " + pid + " AND "
+				+ KEY_PETITION_SIGNEE_ID + " = " + signeeId;
+		Cursor cursor = db.rawQuery(query_get, null);
+
+		cursor.moveToNext();
+		returnMap = new HashMap<String, String>();
+		returnMap.put(KEY_PETITION_SIGNEE_ID, cursor.getString(0));
+		returnMap.put(KEY_PETITION_SIGNEE_NAME, cursor.getString(1));
+		returnMap.put(KEY_PETITION_SIGNEE_IMPORTANCE, cursor.getString(2));
+		returnMap.put(KEY_PETITION_SIGNEE_EMAIL, cursor.getString(3));
+		returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(4));
+
+		cursor.close();
+		return returnMap;
+	}
+
 	public void deletePetition(String id) {
-		String query = "DELETE FROM " + TABLE_NAME1 + " WHERE "
+		String query1 = "DELETE FROM " + TABLE_NAME1 + " WHERE "
 				+ KEY_PETITION_ID + " = " + id;
-		db.execSQL(query);
+		String query2 = "DELETE FROM " + TABLE_NAME2 + " WHERE "
+				+ KEY_PETITION_ID + " = " + id;
+		db.execSQL(query1);
+		db.execSQL(query2);
 	}
 
 	private static class myDbHelper extends SQLiteOpenHelper {

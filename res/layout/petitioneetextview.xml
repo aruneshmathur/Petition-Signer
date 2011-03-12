@@ -4,12 +4,12 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:background="#EFEFEF">
 
-	<TextView android:id="@+id/petitioneeName"
+	<TextView android:id="@+id/petitioneeName" android:textColor="#000000"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:paddingTop="10dip" />
 
-	<TextView android:id="@+id/petitioneeEmail"
+	<TextView android:id="@+id/petitioneeEmail" android:textColor="#000000"
 		android:layout_below="@id/petitioneeName" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:text="Email:" android:paddingBottom="10dip" />
