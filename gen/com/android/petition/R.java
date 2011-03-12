@@ -16,15 +16,18 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int btn_bg_pressed=0x7f020000;
-        public static final int btn_bg_selected=0x7f020001;
-        public static final int colorstrip=0x7f020002;
-        public static final int create=0x7f020003;
-        public static final int list_view_selector=0x7f020004;
-        public static final int pad=0x7f020005;
-        public static final int settings=0x7f020006;
-        public static final int share=0x7f020007;
-        public static final int sign=0x7f020008;
+        public static final int add_button_selector=0x7f020000;
+        public static final int add_normal=0x7f020001;
+        public static final int add_pressed=0x7f020002;
+        public static final int btn_bg_pressed=0x7f020003;
+        public static final int btn_bg_selected=0x7f020004;
+        public static final int colorstrip=0x7f020005;
+        public static final int create=0x7f020006;
+        public static final int list_view_selector=0x7f020007;
+        public static final int pad=0x7f020008;
+        public static final int settings=0x7f020009;
+        public static final int share=0x7f02000a;
+        public static final int sign=0x7f02000b;
     }
     public static final class id {
         public static final int add_signee=0x7f060006;

@@ -4,11 +4,14 @@
 	android:layout_height="fill_parent">
 	<ImageView android:layout_width="fill_parent" android:id="@+id/strip"
 		android:layout_height="wrap_content" android:src="@drawable/colorstrip" />
+
 	<TextView android:layout_width="fill_parent" android:id="@+id/head"
 		android:layout_height="50dip" android:text=" Petition List"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:textColor="#FFFFFF" android:background="#000000"
 		android:gravity="center_vertical" />
+
+
 
 	<ListView android:id="@+id/petitionlist" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:listSelector="@drawable/list_view_selector" />

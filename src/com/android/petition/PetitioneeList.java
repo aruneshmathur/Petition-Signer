@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class PetitioneeList extends Activity{
@@ -36,7 +37,7 @@ public class PetitioneeList extends Activity{
 		petioneeList = database.getPetioneeList(pid);
 		database.close();
 		
-		Button add= (Button)findViewById(R.id.add_signee);
+		ImageButton add= (ImageButton)findViewById(R.id.add_signee);
 		add.setOnClickListener(new OnClickListener() {
 			
 			@Override
