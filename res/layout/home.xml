@@ -20,14 +20,14 @@
 			android:layout_weight="1">
 			<Button android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:text="Create Petition"
-				android:drawableTop="@drawable/create"
+				android:drawableTop="@drawable/home_create_selector"
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:textStyle="bold" android:background="@null"
 				android:layout_weight="1" android:layout_gravity="center_vertical"
 				android:tag="Create" android:onClick="onClick" />
 			<Button android:layout_width="fill_parent" android:textStyle="bold"
 				android:layout_height="wrap_content" android:text="View Petition"
-				android:drawableTop="@drawable/sign"
+				android:drawableTop="@drawable/home_sign_selector"
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:background="@null" android:layout_weight="1"
 				android:layout_gravity="center_vertical" android:tag="View"
@@ -45,7 +45,7 @@
 				android:tag="Mail" android:onClick="onClick" />
 			<Button android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:text="Settings"
-				android:drawableTop="@drawable/settings" android:textAppearance="?android:attr/textAppearanceSmall"
+				android:drawableTop="@drawable/home_settings_selector" android:textAppearance="?android:attr/textAppearanceSmall"
 				android:background="@null" android:layout_weight="1"
 				android:layout_gravity="center_vertical" android:textStyle="bold"
 				android:tag="Settings" android:onClick="onClick" />

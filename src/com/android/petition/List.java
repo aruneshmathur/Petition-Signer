@@ -78,6 +78,7 @@ public class List extends Activity {
 			HashMap<String, String> map = mPetition.get(info.position);
 			String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
 			database.deletePetition(pid);
+			mPetition.remove(info.position);
 			((PetitionListViewAdapter) mPetitionList.getAdapter())
 					.notifyDataSetChanged();
 		}

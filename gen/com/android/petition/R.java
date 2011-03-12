@@ -9,9 +9,8 @@ package com.android.petition;
 
 public final class R {
     public static final class anim {
-        public static final int home_choice_fade_out=0x7f040000;
-        public static final int mainheader_in=0x7f040001;
-        public static final int mainheader_out=0x7f040002;
+        public static final int mainheader_in=0x7f040000;
+        public static final int mainheader_out=0x7f040001;
     }
     public static final class attr {
     }
@@ -26,11 +25,19 @@ public final class R {
         public static final int btn_bg_selected=0x7f020004;
         public static final int colorstrip=0x7f020005;
         public static final int create=0x7f020006;
-        public static final int list_view_selector=0x7f020007;
-        public static final int pad=0x7f020008;
-        public static final int settings=0x7f020009;
-        public static final int share=0x7f02000a;
-        public static final int sign=0x7f02000b;
+        public static final int create_pressed=0x7f020007;
+        public static final int home_create_selector=0x7f020008;
+        public static final int home_settings_selector=0x7f020009;
+        public static final int home_share_selector=0x7f02000a;
+        public static final int home_sign_selector=0x7f02000b;
+        public static final int list_view_selector=0x7f02000c;
+        public static final int pad=0x7f02000d;
+        public static final int settings=0x7f02000e;
+        public static final int settings_pressed=0x7f02000f;
+        public static final int share=0x7f020010;
+        public static final int share_pressed=0x7f020011;
+        public static final int sign=0x7f020012;
+        public static final int sign_pressed=0x7f020013;
     }
     public static final class id {
         public static final int add_signee=0x7f070007;
