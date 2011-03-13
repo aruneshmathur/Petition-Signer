@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class Signature extends Activity implements OnClickListener {
 
@@ -75,19 +76,16 @@ public class Signature extends Activity implements OnClickListener {
 
 			byte[] signature_byte = view.getBitmapBytes();
 			Intent intent = new Intent();
-			intent.putExtra("Signature", signature_byte);
-			/*try {
-				DataOutputStream oStream = new DataOutputStream(
-						new FileOutputStream(file_path));
-				oStream.write(signature_byte);
-				oStream.close();
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-*/
+			intent.putExtra(Petition_Details_db.KEY_PETITION_SIGNEE_SIGNATURE,
+					signature_byte);
+			/*
+			 * try { DataOutputStream oStream = new DataOutputStream( new
+			 * FileOutputStream(file_path)); oStream.write(signature_byte);
+			 * oStream.close();
+			 * 
+			 * } catch (FileNotFoundException e) { e.printStackTrace(); } catch
+			 * (IOException e) { e.printStackTrace(); }
+			 */
 			setResult(RESULT_OK, intent);
 			finish();
 

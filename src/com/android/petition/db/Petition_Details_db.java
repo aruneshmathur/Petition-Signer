@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
 public class Petition_Details_db implements Serializable {
 
-	public static int DB_VERSION = 1;
+	public static int DB_VERSION = 2;
 
 	public static String DB_NAME = "petition.db";
 	public static String TABLE_NAME1 = "newpetition";
@@ -37,6 +37,7 @@ public class Petition_Details_db implements Serializable {
 	public static String KEY_PETITION_SIGNEE_IMPORTANCE = "signeeImportance";
 	public static String KEY_PETITION_SIGNEE_EMAIL = "signeemail";
 	public static String KEY_PETITION_SIGNEE_CONTACT = "signeeContact";
+	public static String KEY_PETITION_SIGNEE_SIGNATURE = "signeeSignature";
 
 	private static String DB_CREATE1 = "CREATE TABLE " + TABLE_NAME1 + " ( "
 			+ KEY_PETITION_ID + " INTEGER PRIMARY KEY, " + KEY_PETITION_TITLE
@@ -50,6 +51,7 @@ public class Petition_Details_db implements Serializable {
 			+ KEY_PETITION_SIGNEE_NAME + " TEXT NOT NULL, "
 			+ KEY_PETITION_SIGNEE_IMPORTANCE + " TEXT, "
 			+ KEY_PETITION_SIGNEE_EMAIL + " TEXT, "
+			+ KEY_PETITION_SIGNEE_SIGNATURE + " BLOB, "
 			+ KEY_PETITION_SIGNEE_CONTACT + " TEXT" + ");";
 
 	private SQLiteDatabase db;
@@ -111,13 +113,20 @@ public class Petition_Details_db implements Serializable {
 		return list;
 	}
 
-	public void insertSignee(HashMap<String, String> map) {
+	public void insertSignee(HashMap<String, Object> map) {
 		String query_frame = "INSERT INTO " + TABLE_NAME2 + " ( ";
 		String query_values = "";
+		byte[] signature = null;
 
 		for (String string : map.keySet()) {
+
+			if (string
+					.equals(Petition_Details_db.KEY_PETITION_SIGNEE_SIGNATURE)) {
+				signature = (byte[]) map.get(string);
+				continue;
+			}
 			query_frame += (string + ',');
-			query_values += ("'" + (map.get(string)) + "'" + ",");
+			query_values += ("'" + ((String) map.get(string)) + "'" + ",");
 		}
 
 		query_frame = query_frame.substring(0, query_frame.length() - 1);
@@ -125,6 +134,12 @@ public class Petition_Details_db implements Serializable {
 				+ query_values.substring(0, query_values.length() - 1) + ");";
 
 		db.execSQL(query_frame);
+
+		// Now insert the signature
+		db.execSQL("UPDATE " + TABLE_NAME2 + " SET "
+				+ KEY_PETITION_SIGNEE_SIGNATURE + " = ? WHERE "
+				+ KEY_PETITION_SIGNEE_ID + " = ?", new Object[] { signature,
+				map.get(KEY_PETITION_SIGNEE_ID) });
 
 		String query_get = "SELECT COUNT(" + KEY_PETITION_ID + ") FROM "
 				+ TABLE_NAME2 + " WHERE " + KEY_PETITION_ID + " = "

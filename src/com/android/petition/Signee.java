@@ -11,11 +11,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Signee extends Activity {
 
-	public static final int SIGN = 1;
-	String mSigneeId;
+	private static final int SIGN = 1;
+	private String mSigneeId;
+	private byte[] mSignature;
+	private HashMap<String, Object> mSendMap;
 
 	@Override
 	public void onCreate(Bundle b) {
@@ -25,7 +28,7 @@ public class Signee extends Activity {
 		Intent intent = getIntent();
 		final String pid = intent.getStringExtra("PetitionID");
 
-		final HashMap<String, String> sendMap = new HashMap<String, String>();
+		mSendMap = new HashMap<String, Object>();
 		final Petition_Details_db database = new Petition_Details_db(
 				getApplicationContext());
 		database.open();
@@ -36,8 +39,6 @@ public class Signee extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(Signee.this, Signature.class);
-				intent.putExtra(Petition_Details_db.KEY_PETITION_SIGNEE_ID,
-						mSigneeId);
 				startActivityForResult(intent, SIGN);
 			}
 		});
@@ -51,29 +52,46 @@ public class Signee extends Activity {
 				for (int i = 0; i < layout.getChildCount(); i++) {
 					if (layout.getChildAt(i).getClass() == EditText.class) {
 						EditText text = (EditText) layout.getChildAt(i);
-						sendMap.put((String) text.getTag(), text.getText()
+						mSendMap.put((String) text.getTag(), text.getText()
 								.toString());
 					} else if (layout.getChildAt(i).getClass() == CheckBox.class) {
 						CheckBox box = (CheckBox) layout.getChildAt(i);
-						sendMap.put((String) box.getTag(), "0");
+						mSendMap.put((String) box.getTag(), "0");
 						if (box.isChecked()) {
-							sendMap.put((String) box.getTag(), "1");
+							mSendMap.put((String) box.getTag(), "1");
 						}
 					}
 				}
 
-				sendMap.put(Petition_Details_db.KEY_PETITION_ID, pid);
-				sendMap.put(Petition_Details_db.KEY_PETITION_SIGNEE_ID,
+				mSendMap.put(Petition_Details_db.KEY_PETITION_ID, pid);
+				mSendMap.put(Petition_Details_db.KEY_PETITION_SIGNEE_ID,
 						mSigneeId);
-				database.insertSignee(sendMap);
+				mSendMap.put(Petition_Details_db.KEY_PETITION_SIGNEE_SIGNATURE,
+						(mSignature));
+
+				database.insertSignee(mSendMap);
 				database.close();
 				Intent data = new Intent();
-				data.putExtra(Petition_Details_db.KEY_PETITION_SIGNEE_ID,
-						sendMap.get(Petition_Details_db.KEY_PETITION_SIGNEE_ID));
+				data.putExtra(
+						Petition_Details_db.KEY_PETITION_SIGNEE_ID,
+						(String) mSendMap
+								.get(Petition_Details_db.KEY_PETITION_SIGNEE_ID));
 				setResult(Activity.RESULT_OK, data);
+
 				finish();
 
 			}
 		});
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == SIGN) {
+			if (resultCode == Activity.RESULT_OK) {
+				mSignature = data
+						.getByteArrayExtra(Petition_Details_db.KEY_PETITION_SIGNEE_SIGNATURE);
+			}
+		}
 	}
 }
