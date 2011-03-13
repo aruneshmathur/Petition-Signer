@@ -6,8 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.android.petition.db.Petition_Details_db;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -33,6 +36,7 @@ public class Signature extends Activity implements OnClickListener {
 	String file_path;
 
 	private Paint mPaint;
+	private int light_gray;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +47,15 @@ public class Signature extends Activity implements OnClickListener {
 
 		view = new SignatureView(this);
 
+		light_gray = getResources().getColor(R.color.light_gray);
+
 		setContentView(R.layout.sign);
 		llSign = (RelativeLayout) findViewById(R.id.ll_sign);
 		llSign.addView(view, 0);
-		llSign.setBackgroundColor(Color.WHITE);
+		llSign.setBackgroundColor(light_gray);
 
-		((Button) findViewById(R.id.btn_done)).setOnClickListener(this);
-		((Button) findViewById(R.id.btn_clear)).setOnClickListener(this);
+		((Button) findViewById(R.id.done)).setOnClickListener(this);
+		((Button) findViewById(R.id.clear)).setOnClickListener(this);
 
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
@@ -65,11 +71,12 @@ public class Signature extends Activity implements OnClickListener {
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-		case R.id.btn_done:
+		case R.id.done:
 
 			byte[] signature_byte = view.getBitmapBytes();
-			try {
-
+			Intent intent = new Intent();
+			intent.putExtra("Signature", signature_byte);
+			/*try {
 				DataOutputStream oStream = new DataOutputStream(
 						new FileOutputStream(file_path));
 				oStream.write(signature_byte);
@@ -80,18 +87,18 @@ public class Signature extends Activity implements OnClickListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			setResult(RESULT_OK, null);
+*/
+			setResult(RESULT_OK, intent);
 			finish();
 
 			// clear = false;
 			// finish();
 
-		case R.id.btn_clear:
+		case R.id.clear:
 			llSign.removeView(view);
 			view = new SignatureView(Signature.this);
 			llSign.addView(view, 0);
-			llSign.setBackgroundColor(Color.WHITE);
+			llSign.setBackgroundColor(light_gray);
 			// clear = true;
 			break;
 

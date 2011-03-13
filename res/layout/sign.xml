@@ -3,13 +3,17 @@
 	android:layout_width="wrap_content" android:layout_height="wrap_content">
 	<RelativeLayout android:id="@+id/ll_sign"
 		android:layout_width="wrap_content" android:layout_height="wrap_content">
-		<Button android:id="@+id/btn_done" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="  Done  "
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentRight="true" />
-		<Button android:id="@+id/btn_clear" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="  Clear  "
-			android:layout_toLeftOf="@+id/btn_done"
-			android:layout_alignParentBottom="true" />
+
+		<LinearLayout android:layout_width="fill_parent"
+			android:id="@+id/bottom_bar" android:layout_height="wrap_content"
+			android:background="@color/dark_gray"
+			android:layout_alignParentBottom="true">
+			<Button android:text="Done" android:layout_width="fill_parent"
+				android:id="@+id/done" android:layout_margin="2dip"
+				android:layout_height="wrap_content" android:layout_weight="1" />
+			<Button android:text="Clear" android:id="@+id/clear"
+				android:layout_width="fill_parent" android:layout_margin="2dip"
+				android:layout_height="wrap_content" android:layout_weight="1" />
+		</LinearLayout>
 	</RelativeLayout>
 </LinearLayout>

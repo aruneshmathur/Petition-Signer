@@ -14,11 +14,14 @@ import android.widget.LinearLayout;
 
 public class Signee extends Activity {
 
+	public static final int SIGN = 1;
+	String mSigneeId;
+
 	@Override
 	public void onCreate(Bundle b) {
 		super.onCreate(b);
 		setContentView(R.layout.signee_create);
-
+		mSigneeId = String.valueOf(System.currentTimeMillis());
 		Intent intent = getIntent();
 		final String pid = intent.getStringExtra("PetitionID");
 
@@ -26,6 +29,18 @@ public class Signee extends Activity {
 		final Petition_Details_db database = new Petition_Details_db(
 				getApplicationContext());
 		database.open();
+
+		Button signButton = (Button) this.findViewById(R.id.sign);
+		signButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(Signee.this, Signature.class);
+				intent.putExtra(Petition_Details_db.KEY_PETITION_SIGNEE_ID,
+						mSigneeId);
+				startActivityForResult(intent, SIGN);
+			}
+		});
 
 		Button doneButton = (Button) this.findViewById(R.id.done);
 		doneButton.setOnClickListener(new OnClickListener() {
@@ -49,7 +64,7 @@ public class Signee extends Activity {
 
 				sendMap.put(Petition_Details_db.KEY_PETITION_ID, pid);
 				sendMap.put(Petition_Details_db.KEY_PETITION_SIGNEE_ID,
-						String.valueOf(System.currentTimeMillis()));
+						mSigneeId);
 				database.insertSignee(sendMap);
 				database.close();
 				Intent data = new Intent();
