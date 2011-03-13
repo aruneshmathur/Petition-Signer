@@ -104,16 +104,6 @@ public class Petition_Details_db implements Serializable {
 			returnMap.put(KEY_PETITION_SIGNED, cursor.getString(2));
 			returnMap.put(KEY_PETITION_COMPLETED, cursor.getString(3));
 
-			query_get = "SELECT COUNT(" + KEY_PETITION_ID + ") FROM "
-					+ TABLE_NAME2 + " WHERE " + KEY_PETITION_ID + " = "
-					+ returnMap.get(KEY_PETITION_ID) + ";";
-
-			Cursor cursor1 = db.rawQuery(query_get, null);
-			cursor1.moveToNext();
-			String s=cursor1.getString(0);
-			returnMap.put(KEY_PETITION_SIGNED, s);
-			cursor1.close();
-
 			list.add(returnMap);
 		}
 
@@ -135,6 +125,21 @@ public class Petition_Details_db implements Serializable {
 				+ query_values.substring(0, query_values.length() - 1) + ");";
 
 		db.execSQL(query_frame);
+
+		String query_get = "SELECT COUNT(" + KEY_PETITION_ID + ") FROM "
+				+ TABLE_NAME2 + " WHERE " + KEY_PETITION_ID + " = "
+				+ map.get(KEY_PETITION_ID) + ";";
+
+		Cursor cursor1 = db.rawQuery(query_get, null);
+		cursor1.moveToNext();
+		String s = cursor1.getString(0);
+		cursor1.close();
+
+		String count_query = "UPDATE " + TABLE_NAME1 + " SET "
+				+ KEY_PETITION_SIGNED + " = " + s + " WHERE " + KEY_PETITION_ID
+				+ " = " + map.get(KEY_PETITION_ID);
+		db.execSQL(count_query);
+
 	}
 
 	public ArrayList<HashMap<String, String>> getPetioneeList(String pid) {
@@ -187,6 +192,14 @@ public class Petition_Details_db implements Serializable {
 		return returnMap;
 	}
 
+	public String getSigneeCount(String pid) {
+		String query = "SELECT " + KEY_PETITION_SIGNED + " FROM " + TABLE_NAME1
+				+ " WHERE " + KEY_PETITION_ID + " = " + pid;
+		Cursor cursor = db.rawQuery(query, null);
+		cursor.moveToNext();
+		return cursor.getString(0);
+	}
+
 	public void deletePetition(String id) {
 		String query1 = "DELETE FROM " + TABLE_NAME1 + " WHERE "
 				+ KEY_PETITION_ID + " = " + id;
@@ -194,6 +207,36 @@ public class Petition_Details_db implements Serializable {
 				+ KEY_PETITION_ID + " = " + id;
 		db.execSQL(query1);
 		db.execSQL(query2);
+	}
+
+	public void deleteSignee(String id) {
+
+		String query_get = "SELECT " + KEY_PETITION_ID + " FROM " + TABLE_NAME2
+				+ " WHERE " + KEY_PETITION_SIGNEE_ID + " = " + id + ";";
+
+		Cursor cursor1 = db.rawQuery(query_get, null);
+		cursor1.moveToNext();
+		String s = cursor1.getString(0);
+		cursor1.close();
+
+		query_get = "SELECT " + KEY_PETITION_SIGNED + " FROM " + TABLE_NAME1
+				+ " WHERE " + KEY_PETITION_ID + " = " + s + ";";
+
+		cursor1 = db.rawQuery(query_get, null);
+		cursor1.moveToNext();
+		String s1 = cursor1.getString(0);
+		cursor1.close();
+
+		String count = String.valueOf(Integer.parseInt(s1) - 1);
+		String count_query = "UPDATE " + TABLE_NAME1 + " SET "
+				+ KEY_PETITION_SIGNED + " = " + count + " WHERE "
+				+ KEY_PETITION_ID + " = " + s;
+		db.execSQL(count_query);
+
+		String query = "DELETE FROM " + TABLE_NAME2 + " WHERE "
+				+ KEY_PETITION_SIGNEE_ID + " = " + id;
+		db.execSQL(query);
+
 	}
 
 	private static class myDbHelper extends SQLiteOpenHelper {

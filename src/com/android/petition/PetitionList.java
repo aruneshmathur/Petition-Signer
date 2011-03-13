@@ -111,8 +111,8 @@ public class PetitionList extends Activity {
 				ViewGroup parent) {
 			if (convertView == null) {
 				mHolder = new ViewHolder();
-				convertView = mInflater
-						.inflate(R.layout.petition_text_view, null);
+				convertView = mInflater.inflate(R.layout.petition_text_view,
+						null);
 				mHolder.petitionTitle = (TextView) convertView
 						.findViewById(R.id.petitionTitle);
 
@@ -120,6 +120,8 @@ public class PetitionList extends Activity {
 						.findViewById(R.id.number_of_signatures);
 				convertView.setTag(mHolder);
 			}
+			
+			mHolder=(ViewHolder)convertView.getTag();
 
 			mHolder.petitionTitle.setText(mPetition.get(position).get(
 					Petition_Details_db.KEY_PETITION_TITLE));
@@ -131,7 +133,8 @@ public class PetitionList extends Activity {
 
 				@Override
 				public void onClick(View arg0) {
-					Intent intent = new Intent(PetitionList.this, SigneeList.class);
+					Intent intent = new Intent(PetitionList.this,
+							SigneeList.class);
 					intent.putExtra(
 							"PetitionID",
 							mPetition.get(position).get(
@@ -163,9 +166,14 @@ public class PetitionList extends Activity {
 	public void onResume() {
 		super.onResume();
 		database.open();
-		mPetition = database.getPetitions();
+		for (HashMap<String, String> map : mPetition) {
+			String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
+			String count = database.getSigneeCount(pid);
+			map.put(Petition_Details_db.KEY_PETITION_SIGNED, count);
+		}
+		database.close();
+
 		((PetitionListViewAdapter) mPetitionList.getAdapter())
 				.notifyDataSetChanged();
-		database.close();
 	}
 }
