@@ -2,8 +2,6 @@ package com.android.petition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.android.petition.PetitionList.PetitionListViewAdapter.ViewHolder;
 import com.android.petition.db.Petition_Details_db;
 import android.app.Activity;
 import android.content.Intent;
@@ -99,9 +97,9 @@ public class SigneeList extends Activity {
 						.findViewById(R.id.signeeEmail);
 				convertView.setTag(mHolder);
 			}
-			
-			mHolder=(ViewHolder)convertView.getTag();
-			
+
+			mHolder = (ViewHolder) convertView.getTag();
+
 			mHolder.petitioneeName.setText(mSigneeData.get(position).get(
 					Petition_Details_db.KEY_PETITION_SIGNEE_NAME));
 
