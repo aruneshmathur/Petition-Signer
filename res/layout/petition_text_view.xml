@@ -9,9 +9,9 @@
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:textColor="@color/black" android:paddingTop="10dip" />
 
-	<TextView android:id="@+id/petitionSigned" android:layout_below="@id/petitionTitle"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceMedium"
+	<TextView android:id="@+id/petitionSigned"
+		android:layout_below="@id/petitionTitle" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:textColor="@color/black" android:text="Signed By:"
 		android:paddingBottom="10dip" />
 
@@ -22,6 +22,9 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingBottom="10dip" />
 
-
+	<ImageView android:src="@drawable/incomplete"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignParentRight="true" android:paddingTop="20dip"
+		android:paddingRight="5dip" />
 </RelativeLayout>
 

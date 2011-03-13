@@ -29,14 +29,17 @@ public final class R {
         public static final int home_settings_selector=0x7f020009;
         public static final int home_share_selector=0x7f02000a;
         public static final int home_sign_selector=0x7f02000b;
-        public static final int list_view_selector=0x7f02000c;
-        public static final int pad=0x7f02000d;
-        public static final int settings=0x7f02000e;
-        public static final int settings_pressed=0x7f02000f;
-        public static final int share=0x7f020010;
-        public static final int share_pressed=0x7f020011;
-        public static final int sign=0x7f020012;
-        public static final int sign_pressed=0x7f020013;
+        public static final int incomplete=0x7f02000c;
+        public static final int list_view_selector=0x7f02000d;
+        public static final int not_synced=0x7f02000e;
+        public static final int pad=0x7f02000f;
+        public static final int settings=0x7f020010;
+        public static final int settings_pressed=0x7f020011;
+        public static final int share=0x7f020012;
+        public static final int share_pressed=0x7f020013;
+        public static final int sign=0x7f020014;
+        public static final int sign_pressed=0x7f020015;
+        public static final int synced=0x7f020016;
     }
     public static final class id {
         public static final int add_signee=0x7f06000d;
