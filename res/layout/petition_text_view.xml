@@ -22,9 +22,9 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingBottom="10dip" />
 
-	<ImageView android:src="@drawable/incomplete"
+	<ImageButton android:src="@drawable/incomplete" android:id="@+id/sync"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:layout_alignParentRight="true" android:paddingTop="20dip"
-		android:paddingRight="5dip" />
+		android:paddingRight="5dip" android:background="@android:color/transparent" />
 </RelativeLayout>
 

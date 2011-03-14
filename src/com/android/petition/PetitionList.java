@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,15 @@ public class PetitionList extends Activity {
 
 		registerForContextMenu(mPetitionList);
 
+		ImageButton syncButton = (ImageButton) this.findViewById(R.id.sync);
+		syncButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+			}
+		});
+
 	}
 
 	@Override
@@ -62,10 +72,7 @@ public class PetitionList extends Activity {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			menu.setHeaderTitle(mPetition.get(info.position).get(
 					Petition_Details_db.KEY_PETITION_TITLE));
-
 			menu.add(Menu.NONE, 0, 0, "Delete");
-			menu.add(Menu.NONE, 1, 1, "Synch");
-
 		}
 	}
 
@@ -120,8 +127,8 @@ public class PetitionList extends Activity {
 						.findViewById(R.id.number_of_signatures);
 				convertView.setTag(mHolder);
 			}
-			
-			mHolder=(ViewHolder)convertView.getTag();
+
+			mHolder = (ViewHolder) convertView.getTag();
 
 			mHolder.petitionTitle.setText(mPetition.get(position).get(
 					Petition_Details_db.KEY_PETITION_TITLE));
