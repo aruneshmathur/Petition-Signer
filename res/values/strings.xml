@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Main!</string>
-    <string name="app_name">Petition Signer</string>
+	<string name="hello">Hello World, Main!</string>
+	<string name="app_name">Petition Signer</string>
+	<string name="petition_create_failed">Error sending Petition, stored offline to send later.</string>
 </resources>

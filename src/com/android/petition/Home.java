@@ -1,6 +1,5 @@
 package com.android.petition;
 
-import com.android.petition.constants.Constants;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

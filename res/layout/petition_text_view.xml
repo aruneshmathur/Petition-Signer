@@ -26,5 +26,10 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:layout_alignParentRight="true" android:paddingTop="20dip"
 		android:paddingRight="5dip" android:background="@android:color/transparent" />
+
+	<ImageButton android:src="@drawable/not_sent" android:id="@+id/send"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_toLeftOf="@id/sync" android:paddingTop="20dip"
+		android:paddingRight="5dip" android:background="@android:color/transparent" />
 </RelativeLayout>
 

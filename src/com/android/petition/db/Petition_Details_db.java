@@ -6,18 +6,24 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcFault;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.widget.Toast;
 
 public class Petition_Details_db implements Serializable {
 
-	public static int DB_VERSION = 2;
+	public static int DB_VERSION = 4;
 
 	public static String DB_NAME = "petition.db";
 	public static String TABLE_NAME1 = "newpetition";
@@ -31,6 +37,7 @@ public class Petition_Details_db implements Serializable {
 	public static String KEY_PETITION_COUNTRY = "petitionCountry";
 	public static String KEY_PETITION_SIGNED = "petitionSigned";
 	public static String KEY_PETITION_COMPLETED = "petitionCompleted";
+	public static String KEY_PETITION_SYNCED = "petitionSynced";
 
 	public static String KEY_PETITION_SIGNEE_ID = "signeeID";
 	public static String KEY_PETITION_SIGNEE_NAME = "signeeName";
@@ -38,13 +45,14 @@ public class Petition_Details_db implements Serializable {
 	public static String KEY_PETITION_SIGNEE_EMAIL = "signeemail";
 	public static String KEY_PETITION_SIGNEE_CONTACT = "signeeContact";
 	public static String KEY_PETITION_SIGNEE_SIGNATURE = "signeeSignature";
+	public static String KEY_PETITION_SIGNEE_SYNCED = "signeeSynced";
 
 	private static String DB_CREATE1 = "CREATE TABLE " + TABLE_NAME1 + " ( "
 			+ KEY_PETITION_ID + " INTEGER PRIMARY KEY, " + KEY_PETITION_TITLE
 			+ " TEXT NOT NULL, " + KEY_PETITION_SUMMARY + " TEXT NOT NULL, "
 			+ KEY_PETITION_WEB + " TEXT, " + KEY_PETITION_COUNTRY + " TEXT, "
 			+ KEY_PETITION_SIGNED + " TEXT, " + KEY_PETITION_COMPLETED
-			+ " INTEGER" + ");";
+			+ " INTEGER, " + KEY_PETITION_SYNCED + " TEXT" + ");";
 
 	private static String DB_CREATE2 = "CREATE TABLE " + TABLE_NAME2 + " ( "
 			+ KEY_PETITION_ID + " TEXT, " + KEY_PETITION_SIGNEE_ID + " TEXT, "
@@ -52,7 +60,8 @@ public class Petition_Details_db implements Serializable {
 			+ KEY_PETITION_SIGNEE_IMPORTANCE + " TEXT, "
 			+ KEY_PETITION_SIGNEE_EMAIL + " TEXT, "
 			+ KEY_PETITION_SIGNEE_SIGNATURE + " BLOB, "
-			+ KEY_PETITION_SIGNEE_CONTACT + " TEXT" + ");";
+			+ KEY_PETITION_SIGNEE_CONTACT + " TEXT, "
+			+ KEY_PETITION_SIGNEE_SYNCED + ");";
 
 	private SQLiteDatabase db;
 	private final Context ctx;
@@ -72,7 +81,7 @@ public class Petition_Details_db implements Serializable {
 		db.close();
 	}
 
-	public void insertPetition(HashMap<String, String> map) {
+	public boolean insertPetition(HashMap<String, String> map) {
 
 		String query_frame = "INSERT INTO " + TABLE_NAME1 + " ( ";
 		String query_values = "";
@@ -87,6 +96,39 @@ public class Petition_Details_db implements Serializable {
 				+ query_values.substring(0, query_values.length() - 1) + ");";
 
 		db.execSQL(query_frame);
+
+		// Launch to send the petition to the cloud
+		// should be moved to a AsyncTask
+		map.put(KEY_PETITION_ID,
+				"aruneshmathur1990@gmail.com" + map.get(KEY_PETITION_ID));
+		System.setProperty("org.xml.sax.driver", "org.xmlpull.v1.sax2.Driver");
+
+		XmlRpcClient client = null;
+		try {
+			client = new XmlRpcClient(
+					"http://www.petitionsigner.appspot.com/petition_server",
+					false);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		Object result_received = false;
+
+		try {
+
+			result_received = client.invoke(
+					"PetitionServer.requestCreatePetition",
+					new Object[] { map });
+			System.currentTimeMillis();
+
+		} catch (XmlRpcException e) {
+			e.printStackTrace();
+			return true;
+		} catch (XmlRpcFault e) {
+			e.printStackTrace();
+			return false;
+		}
+		return (Boolean) result_received;
 	}
 
 	public ArrayList<HashMap<String, String>> getPetitions() {
@@ -96,7 +138,8 @@ public class Petition_Details_db implements Serializable {
 
 		String query_get = "SELECT " + KEY_PETITION_ID + " , "
 				+ KEY_PETITION_TITLE + " , " + KEY_PETITION_SIGNED + " , "
-				+ KEY_PETITION_COMPLETED + " FROM " + TABLE_NAME1 + ";";
+				+ KEY_PETITION_COMPLETED + " , " + KEY_PETITION_SYNCED
+				+ " FROM " + TABLE_NAME1 + ";";
 		Cursor cursor = db.rawQuery(query_get, null);
 
 		while (cursor.moveToNext()) {
@@ -105,7 +148,7 @@ public class Petition_Details_db implements Serializable {
 			returnMap.put(KEY_PETITION_TITLE, cursor.getString(1));
 			returnMap.put(KEY_PETITION_SIGNED, cursor.getString(2));
 			returnMap.put(KEY_PETITION_COMPLETED, cursor.getString(3));
-
+			returnMap.put(KEY_PETITION_SYNCED, cursor.getString(4));
 			list.add(returnMap);
 		}
 
@@ -252,6 +295,13 @@ public class Petition_Details_db implements Serializable {
 				+ KEY_PETITION_SIGNEE_ID + " = " + id;
 		db.execSQL(query);
 
+	}
+
+	public void setPetitionStatus(String pid) {
+		String sql = "UPDATE " + TABLE_NAME1 + " SET " + KEY_PETITION_SYNCED
+				+ " = " + "1" + " WHERE " + KEY_PETITION_ID + " = "
+				+ pid.substring(pid.indexOf("com") + 3);
+		db.execSQL(sql);
 	}
 
 	private static class myDbHelper extends SQLiteOpenHelper {

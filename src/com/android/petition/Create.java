@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Create extends Activity {
 
@@ -19,7 +20,7 @@ public class Create extends Activity {
 	Button mClearButton;
 	EditText mText;
 	HashMap<String, String> mSendMap;
-	Petition_Details_db database; 
+	Petition_Details_db database;
 
 	@Override
 	public void onCreate(Bundle b) {
@@ -30,8 +31,7 @@ public class Create extends Activity {
 		mClearButton = (Button) findViewById(R.id.clear);
 
 		mSendMap = new HashMap<String, String>();
-		database = new Petition_Details_db(
-				getApplicationContext());
+		database = new Petition_Details_db(getApplicationContext());
 		database.open();
 
 		mDoneButton.setOnClickListener(new OnClickListener() {
@@ -46,11 +46,23 @@ public class Create extends Activity {
 				}
 				mSendMap.put(Petition_Details_db.KEY_PETITION_COMPLETED, "-1");
 				mSendMap.put(Petition_Details_db.KEY_PETITION_SIGNED, "0");
+				mSendMap.put(Petition_Details_db.KEY_PETITION_SYNCED, "0");
 				mSendMap.put(Petition_Details_db.KEY_PETITION_ID,
 						String.valueOf(System.currentTimeMillis()));
 
-				database.insertPetition(mSendMap);
+				if (database.insertPetition(mSendMap)==true) {
+					database.setPetitionStatus(mSendMap
+							.get(Petition_Details_db.KEY_PETITION_ID));
+
+				} else
+					Toast.makeText(
+							getApplicationContext(),
+							getResources().getString(
+									R.string.petition_create_failed), 10)
+							.show();
+
 				finish();
+
 			}
 		});
 

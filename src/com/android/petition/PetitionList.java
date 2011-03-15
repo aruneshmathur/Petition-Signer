@@ -3,7 +3,6 @@ package com.android.petition;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.android.petition.constants.Constants;
 import com.android.petition.db.Petition_Details_db;
 
 import android.app.Activity;
@@ -54,14 +53,14 @@ public class PetitionList extends Activity {
 
 		registerForContextMenu(mPetitionList);
 
-		ImageButton syncButton = (ImageButton) this.findViewById(R.id.sync);
-		syncButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-			}
-		});
+		/*
+		 * ImageButton syncButton = (ImageButton) this.findViewById(R.id.sync);
+		 * syncButton.setOnClickListener(new OnClickListener() {
+		 * 
+		 * @Override public void onClick(View arg0) {
+		 * 
+		 * } });
+		 */
 
 	}
 
@@ -125,6 +124,11 @@ public class PetitionList extends Activity {
 
 				mHolder.no_of_signatures = (TextView) convertView
 						.findViewById(R.id.number_of_signatures);
+
+				mHolder.petition_sent = (ImageButton) convertView
+						.findViewById(R.id.send);
+				mHolder.synced = (ImageButton) convertView
+						.findViewById(R.id.sync);
 				convertView.setTag(mHolder);
 			}
 
@@ -135,6 +139,13 @@ public class PetitionList extends Activity {
 
 			mHolder.no_of_signatures.setText(mPetition.get(position).get(
 					Petition_Details_db.KEY_PETITION_SIGNED));
+
+			if (mPetition.get(position)
+					.get(Petition_Details_db.KEY_PETITION_SYNCED).equals("1")) {
+				mHolder.petition_sent.setVisibility(View.GONE);
+			} else {
+				mHolder.petition_sent.setVisibility(View.VISIBLE);
+			}
 
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -165,6 +176,8 @@ public class PetitionList extends Activity {
 		public class ViewHolder {
 			TextView petitionTitle;
 			TextView no_of_signatures;
+			ImageButton petition_sent;
+			ImageButton synced;
 		}
 
 	}
