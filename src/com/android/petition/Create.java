@@ -57,7 +57,7 @@ public class Create extends Activity {
 						String.valueOf(System.currentTimeMillis()));
 
 				database.insertPetition(mSendMap);
-				new SyncTask(getApplicationContext()).execute(mSendMap);
+				new Petition_SyncTask(getApplicationContext()).execute(mSendMap);
 				database.close();
 				finish();
 

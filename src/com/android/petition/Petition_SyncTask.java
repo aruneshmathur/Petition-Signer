@@ -13,7 +13,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class SyncTask extends
+public class Petition_SyncTask extends
 		AsyncTask<HashMap<String, String>, Void, HashMap<String, Object>> {
 
 	private Context mContext;
@@ -22,7 +22,7 @@ public class SyncTask extends
 	private final String KEY_RESULT_MAP = "resultMap";
 	private final String KEY_RESULT_STATUS = "resultStatus";
 
-	public SyncTask(Context appContext) {
+	public Petition_SyncTask(Context appContext) {
 		mContext = appContext;
 	}
 

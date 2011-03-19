@@ -148,7 +148,7 @@ public class PetitionList extends Activity {
 			mHolder.created.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					new SyncTask(getApplicationContext()).execute(mPetition
+					new Petition_SyncTask(getApplicationContext()).execute(mPetition
 							.get(position));
 				}
 			});
