@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class Petition_Details_db implements Serializable {
 
-	public static int DB_VERSION = 4;
+	public static int DB_VERSION = 2;
 
 	public static String DB_NAME = "petition.db";
 	public static String TABLE_NAME1 = "newpetition";
@@ -36,7 +36,7 @@ public class Petition_Details_db implements Serializable {
 	public static String KEY_PETITION_WEB = "petitionWeb";
 	public static String KEY_PETITION_COUNTRY = "petitionCountry";
 	public static String KEY_PETITION_SIGNED = "petitionSigned";
-	public static String KEY_PETITION_COMPLETED = "petitionCompleted";
+	public static String KEY_PETITION_CREATED = "petitionCreated";
 	public static String KEY_PETITION_SYNCED = "petitionSynced";
 
 	public static String KEY_PETITION_SIGNEE_ID = "signeeID";
@@ -51,8 +51,8 @@ public class Petition_Details_db implements Serializable {
 			+ KEY_PETITION_ID + " INTEGER PRIMARY KEY, " + KEY_PETITION_TITLE
 			+ " TEXT NOT NULL, " + KEY_PETITION_SUMMARY + " TEXT NOT NULL, "
 			+ KEY_PETITION_WEB + " TEXT, " + KEY_PETITION_COUNTRY + " TEXT, "
-			+ KEY_PETITION_SIGNED + " TEXT, " + KEY_PETITION_COMPLETED
-			+ " INTEGER, " + KEY_PETITION_SYNCED + " TEXT" + ");";
+			+ KEY_PETITION_SIGNED + " TEXT, " + KEY_PETITION_CREATED
+			+ " STRING, " + KEY_PETITION_SYNCED + " TEXT" + ");";
 
 	private static String DB_CREATE2 = "CREATE TABLE " + TABLE_NAME2 + " ( "
 			+ KEY_PETITION_ID + " TEXT, " + KEY_PETITION_SIGNEE_ID + " TEXT, "
@@ -81,7 +81,7 @@ public class Petition_Details_db implements Serializable {
 		db.close();
 	}
 
-	public boolean insertPetition(HashMap<String, String> map) {
+	public void insertPetition(HashMap<String, String> map) {
 
 		String query_frame = "INSERT INTO " + TABLE_NAME1 + " ( ";
 		String query_values = "";
@@ -97,38 +97,6 @@ public class Petition_Details_db implements Serializable {
 
 		db.execSQL(query_frame);
 
-		// Launch to send the petition to the cloud
-		// should be moved to a AsyncTask
-		map.put(KEY_PETITION_ID,
-				"aruneshmathur1990@gmail.com" + map.get(KEY_PETITION_ID));
-		System.setProperty("org.xml.sax.driver", "org.xmlpull.v1.sax2.Driver");
-
-		XmlRpcClient client = null;
-		try {
-			client = new XmlRpcClient(
-					"http://www.petitionsigner.appspot.com/petition_server",
-					false);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-
-		Object result_received = false;
-
-		try {
-
-			result_received = client.invoke(
-					"PetitionServer.requestCreatePetition",
-					new Object[] { map });
-			System.currentTimeMillis();
-
-		} catch (XmlRpcException e) {
-			e.printStackTrace();
-			return true;
-		} catch (XmlRpcFault e) {
-			e.printStackTrace();
-			return false;
-		}
-		return (Boolean) result_received;
 	}
 
 	public ArrayList<HashMap<String, String>> getPetitions() {
@@ -138,8 +106,9 @@ public class Petition_Details_db implements Serializable {
 
 		String query_get = "SELECT " + KEY_PETITION_ID + " , "
 				+ KEY_PETITION_TITLE + " , " + KEY_PETITION_SIGNED + " , "
-				+ KEY_PETITION_COMPLETED + " , " + KEY_PETITION_SYNCED
-				+ " FROM " + TABLE_NAME1 + ";";
+				+ KEY_PETITION_CREATED + " , " + KEY_PETITION_SYNCED + " , "
+				+ KEY_PETITION_SUMMARY + " , " + KEY_PETITION_WEB + " , "
+				+ KEY_PETITION_COUNTRY + " FROM " + TABLE_NAME1 + ";";
 		Cursor cursor = db.rawQuery(query_get, null);
 
 		while (cursor.moveToNext()) {
@@ -147,8 +116,12 @@ public class Petition_Details_db implements Serializable {
 			returnMap.put(KEY_PETITION_ID, cursor.getString(0));
 			returnMap.put(KEY_PETITION_TITLE, cursor.getString(1));
 			returnMap.put(KEY_PETITION_SIGNED, cursor.getString(2));
-			returnMap.put(KEY_PETITION_COMPLETED, cursor.getString(3));
+			returnMap.put(KEY_PETITION_CREATED, cursor.getString(3));
 			returnMap.put(KEY_PETITION_SYNCED, cursor.getString(4));
+			returnMap.put(KEY_PETITION_SUMMARY, cursor.getString(5));
+			returnMap.put(KEY_PETITION_WEB, cursor.getString(6));
+			returnMap.put(KEY_PETITION_COUNTRY, cursor.getString(7));
+
 			list.add(returnMap);
 		}
 
@@ -194,8 +167,9 @@ public class Petition_Details_db implements Serializable {
 		cursor1.close();
 
 		String count_query = "UPDATE " + TABLE_NAME1 + " SET "
-				+ KEY_PETITION_SIGNED + " = " + s + " WHERE " + KEY_PETITION_ID
-				+ " = " + map.get(KEY_PETITION_ID);
+				+ KEY_PETITION_SIGNED + " = " + s + " , " + KEY_PETITION_SYNCED
+				+ " = 0" + " WHERE " + KEY_PETITION_ID + " = "
+				+ map.get(KEY_PETITION_ID);
 		db.execSQL(count_query);
 
 	}
@@ -250,12 +224,17 @@ public class Petition_Details_db implements Serializable {
 		return returnMap;
 	}
 
-	public String getSigneeCount(String pid) {
-		String query = "SELECT " + KEY_PETITION_SIGNED + " FROM " + TABLE_NAME1
-				+ " WHERE " + KEY_PETITION_ID + " = " + pid;
+	public HashMap<String, String> getSigneeStatus(String pid) {
+		String query = "SELECT " + KEY_PETITION_SIGNED + " , "
+				+ KEY_PETITION_SYNCED + " FROM " + TABLE_NAME1 + " WHERE "
+				+ KEY_PETITION_ID + " = " + pid;
 		Cursor cursor = db.rawQuery(query, null);
 		cursor.moveToNext();
-		return cursor.getString(0);
+		HashMap<String,String> map = new HashMap<String, String>();
+		map.put(Petition_Details_db.KEY_PETITION_SIGNED, cursor.getString(0));
+		map.put(Petition_Details_db.KEY_PETITION_SYNCED, cursor.getString(1));
+		cursor.close();
+		return map;
 	}
 
 	public void deletePetition(String id) {
@@ -298,9 +277,9 @@ public class Petition_Details_db implements Serializable {
 	}
 
 	public void setPetitionStatus(String pid) {
-		String sql = "UPDATE " + TABLE_NAME1 + " SET " + KEY_PETITION_SYNCED
+		String sql = "UPDATE " + TABLE_NAME1 + " SET " + KEY_PETITION_CREATED
 				+ " = " + "1" + " WHERE " + KEY_PETITION_ID + " = "
-				+ pid.substring(pid.indexOf("com") + 3);
+				+ pid.substring(pid.indexOf("com") + 3) + " ;";
 		db.execSQL(sql);
 	}
 

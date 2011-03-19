@@ -29,10 +29,10 @@ public final class R {
         public static final int home_settings_selector=0x7f020009;
         public static final int home_share_selector=0x7f02000a;
         public static final int home_sign_selector=0x7f02000b;
-        public static final int incomplete=0x7f02000c;
-        public static final int list_view_selector=0x7f02000d;
-        public static final int not_sent=0x7f02000e;
-        public static final int not_synced=0x7f02000f;
+        public static final int list_view_selector=0x7f02000c;
+        public static final int not_created=0x7f02000d;
+        public static final int not_synced=0x7f02000e;
+        public static final int not_updated=0x7f02000f;
         public static final int pad=0x7f020010;
         public static final int settings=0x7f020011;
         public static final int settings_pressed=0x7f020012;
@@ -50,18 +50,18 @@ public final class R {
         public static final int done=0x7f060003;
         public static final int head=0x7f060001;
         public static final int ll_sign=0x7f06000c;
+        public static final int not_created=0x7f06000a;
+        public static final int not_synced=0x7f06000b;
         public static final int number_of_signatures=0x7f060009;
         public static final int petitionSigned=0x7f060008;
         public static final int petitionTitle=0x7f060007;
         public static final int petitionlist=0x7f060006;
-        public static final int send=0x7f06000b;
         public static final int sign=0x7f06000e;
         public static final int signeeEmail=0x7f060012;
         public static final int signeeList=0x7f060010;
         public static final int signeeName=0x7f060011;
         public static final int strip=0x7f060000;
         public static final int subLayout=0x7f06000d;
-        public static final int sync=0x7f06000a;
     }
     public static final class layout {
         public static final int create=0x7f030000;
@@ -76,6 +76,8 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f050001;
         public static final int hello=0x7f050000;
-        public static final int petition_create_failed=0x7f050002;
+        public static final int petition_send_failed=0x7f050002;
+        public static final int petition_send_success=0x7f050004;
+        public static final int petition_server_failed=0x7f050003;
     }
 }

@@ -5,7 +5,7 @@
 	android:background="@drawable/list_view_selector">
 
 	<TextView android:id="@+id/petitionTitle"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:textColor="@color/black" android:paddingTop="10dip" />
 
@@ -22,14 +22,21 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingBottom="10dip" />
 
-	<ImageButton android:src="@drawable/incomplete" android:id="@+id/sync"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_alignParentRight="true" android:paddingTop="20dip"
-		android:paddingRight="5dip" android:background="@android:color/transparent" />
+	<RelativeLayout layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_alignParentRight="true">
+		<LinearLayout layout_width="wrap_content"
+			android:orientation="horizontal" android:layout_height="wrap_content">
 
-	<ImageButton android:src="@drawable/not_sent" android:id="@+id/send"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_toLeftOf="@id/sync" android:paddingTop="20dip"
-		android:paddingRight="5dip" android:background="@android:color/transparent" />
+			<ImageButton android:src="@drawable/not_created"
+				android:id="@+id/not_created" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:paddingTop="20dip"
+				android:paddingRight="5dip" android:background="@android:color/transparent" />
+
+			<ImageButton android:src="@drawable/not_updated"
+				android:id="@+id/not_synced" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:paddingTop="20dip"
+				android:paddingRight="5dip" android:background="@android:color/transparent" />
+		</LinearLayout>
+	</RelativeLayout>
 </RelativeLayout>
 

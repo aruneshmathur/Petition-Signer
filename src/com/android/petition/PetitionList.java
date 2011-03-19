@@ -53,15 +53,6 @@ public class PetitionList extends Activity {
 
 		registerForContextMenu(mPetitionList);
 
-		/*
-		 * ImageButton syncButton = (ImageButton) this.findViewById(R.id.sync);
-		 * syncButton.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View arg0) {
-		 * 
-		 * } });
-		 */
-
 	}
 
 	@Override
@@ -125,10 +116,10 @@ public class PetitionList extends Activity {
 				mHolder.no_of_signatures = (TextView) convertView
 						.findViewById(R.id.number_of_signatures);
 
-				mHolder.petition_sent = (ImageButton) convertView
-						.findViewById(R.id.send);
+				mHolder.created = (ImageButton) convertView
+						.findViewById(R.id.not_created);
 				mHolder.synced = (ImageButton) convertView
-						.findViewById(R.id.sync);
+						.findViewById(R.id.not_synced);
 				convertView.setTag(mHolder);
 			}
 
@@ -142,10 +133,25 @@ public class PetitionList extends Activity {
 
 			if (mPetition.get(position)
 					.get(Petition_Details_db.KEY_PETITION_SYNCED).equals("1")) {
-				mHolder.petition_sent.setVisibility(View.GONE);
+				mHolder.synced.setVisibility(View.GONE);
 			} else {
-				mHolder.petition_sent.setVisibility(View.VISIBLE);
+				mHolder.synced.setVisibility(View.VISIBLE);
 			}
+
+			if (mPetition.get(position)
+					.get(Petition_Details_db.KEY_PETITION_CREATED).equals("1")) {
+				mHolder.created.setVisibility(View.GONE);
+			} else {
+				mHolder.created.setVisibility(View.VISIBLE);
+			}
+
+			mHolder.created.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					new SyncTask(getApplicationContext()).execute(mPetition
+							.get(position));
+				}
+			});
 
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -176,7 +182,7 @@ public class PetitionList extends Activity {
 		public class ViewHolder {
 			TextView petitionTitle;
 			TextView no_of_signatures;
-			ImageButton petition_sent;
+			ImageButton created;
 			ImageButton synced;
 		}
 
@@ -188,8 +194,9 @@ public class PetitionList extends Activity {
 		database.open();
 		for (HashMap<String, String> map : mPetition) {
 			String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
-			String count = database.getSigneeCount(pid);
-			map.put(Petition_Details_db.KEY_PETITION_SIGNED, count);
+			HashMap<String, String> result = database.getSigneeStatus(pid);
+			map.put(Petition_Details_db.KEY_PETITION_SIGNED, result.get(Petition_Details_db.KEY_PETITION_SIGNED));
+			map.put(Petition_Details_db.KEY_PETITION_SYNCED, result.get(Petition_Details_db.KEY_PETITION_SYNCED));
 		}
 		database.close();
 
