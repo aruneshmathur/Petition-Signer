@@ -174,7 +174,7 @@ public class Petition_Details_db implements Serializable {
 
 	}
 
-	public ArrayList<HashMap<String, String>> getPetioneeList(String pid) {
+	public ArrayList<HashMap<String, String>> getSigneeList(String pid) {
 		HashMap<String, String> returnMap = null;
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
@@ -189,6 +189,33 @@ public class Petition_Details_db implements Serializable {
 		while (cursor.moveToNext()) {
 			returnMap = new HashMap<String, String>();
 			returnMap.put(KEY_PETITION_SIGNEE_ID, cursor.getString(0));
+			returnMap.put(KEY_PETITION_SIGNEE_NAME, cursor.getString(1));
+			returnMap.put(KEY_PETITION_SIGNEE_IMPORTANCE, cursor.getString(2));
+			returnMap.put(KEY_PETITION_SIGNEE_EMAIL, cursor.getString(3));
+			returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(4));
+			list.add(returnMap);
+		}
+
+		cursor.close();
+		return list;
+	}
+
+	public ArrayList<HashMap<String, Object>> getSigneesForUpload(String pid) {
+		HashMap<String, Object> returnMap = null;
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+
+		String query_get = "SELECT " + KEY_PETITION_SIGNEE_ID + " , "
+				+ KEY_PETITION_SIGNEE_NAME + " , "
+				+ KEY_PETITION_SIGNEE_IMPORTANCE + " , "
+				+ KEY_PETITION_SIGNEE_EMAIL + " , "
+				+ KEY_PETITION_SIGNEE_CONTACT + " FROM " + TABLE_NAME2
+				+ " WHERE " + KEY_PETITION_ID + " = " + pid;
+		Cursor cursor = db.rawQuery(query_get, null);
+
+		while (cursor.moveToNext()) {
+			returnMap = new HashMap<String, Object>();
+			returnMap.put(KEY_PETITION_SIGNEE_ID, "aruneshmathur1990@gmail.com"
+					+ cursor.getString(0));
 			returnMap.put(KEY_PETITION_SIGNEE_NAME, cursor.getString(1));
 			returnMap.put(KEY_PETITION_SIGNEE_IMPORTANCE, cursor.getString(2));
 			returnMap.put(KEY_PETITION_SIGNEE_EMAIL, cursor.getString(3));
@@ -230,7 +257,7 @@ public class Petition_Details_db implements Serializable {
 				+ KEY_PETITION_ID + " = " + pid;
 		Cursor cursor = db.rawQuery(query, null);
 		cursor.moveToNext();
-		HashMap<String,String> map = new HashMap<String, String>();
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(Petition_Details_db.KEY_PETITION_SIGNED, cursor.getString(0));
 		map.put(Petition_Details_db.KEY_PETITION_SYNCED, cursor.getString(1));
 		cursor.close();

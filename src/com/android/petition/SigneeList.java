@@ -45,7 +45,7 @@ public class SigneeList extends Activity {
 		database = new Petition_Details_db(getApplicationContext());
 		database.open();
 
-		mSigneeData = database.getPetioneeList(mPid);
+		mSigneeData = database.getSigneeList(mPid);
 		database.close();
 
 		ImageButton add = (ImageButton) findViewById(R.id.add_signee);

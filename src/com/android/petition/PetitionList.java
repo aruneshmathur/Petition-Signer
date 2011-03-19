@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.android.petition.db.Petition_Details_db;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -146,10 +145,24 @@ public class PetitionList extends Activity {
 			}
 
 			mHolder.created.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View arg0) {
-					new Petition_SyncTask(getApplicationContext()).execute(mPetition
-							.get(position));
+					HashMap<String, String> map = mPetition.get(position);
+					String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
+					if (!pid.contains("aruneshmathur1990@gmail.com")) {
+						pid = "aruneshmathur1990@gmail.com" + pid;
+						map.put(Petition_Details_db.KEY_PETITION_ID, pid);
+					}
+					new Petition_SyncTask(getApplicationContext()).execute(map);
+				}
+			});
+
+			mHolder.synced.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
 				}
 			});
 
@@ -157,12 +170,16 @@ public class PetitionList extends Activity {
 
 				@Override
 				public void onClick(View arg0) {
+					HashMap<String, String> map = mPetition.get(position);
+					String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
+					if (pid.contains("aruneshmathur1990@gmail.com")) {
+						pid = pid.substring(pid.indexOf("com") + 3);
+						map.put(Petition_Details_db.KEY_PETITION_ID, pid);
+					}
 					Intent intent = new Intent(PetitionList.this,
 							SigneeList.class);
-					intent.putExtra(
-							"PetitionID",
-							mPetition.get(position).get(
-									Petition_Details_db.KEY_PETITION_ID));
+					intent.putExtra("PetitionID",
+							map.get(Petition_Details_db.KEY_PETITION_ID));
 					database.close();
 					startActivity(intent);
 				}
@@ -195,8 +212,10 @@ public class PetitionList extends Activity {
 		for (HashMap<String, String> map : mPetition) {
 			String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
 			HashMap<String, String> result = database.getSigneeStatus(pid);
-			map.put(Petition_Details_db.KEY_PETITION_SIGNED, result.get(Petition_Details_db.KEY_PETITION_SIGNED));
-			map.put(Petition_Details_db.KEY_PETITION_SYNCED, result.get(Petition_Details_db.KEY_PETITION_SYNCED));
+			map.put(Petition_Details_db.KEY_PETITION_SIGNED,
+					result.get(Petition_Details_db.KEY_PETITION_SIGNED));
+			map.put(Petition_Details_db.KEY_PETITION_SYNCED,
+					result.get(Petition_Details_db.KEY_PETITION_SYNCED));
 		}
 		database.close();
 
