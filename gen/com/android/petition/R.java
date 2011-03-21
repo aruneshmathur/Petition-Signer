@@ -79,5 +79,7 @@ public final class R {
         public static final int petition_send_failed=0x7f050002;
         public static final int petition_send_success=0x7f050004;
         public static final int petition_server_failed=0x7f050003;
+        public static final int signee_send_failure=0x7f050006;
+        public static final int signee_send_success=0x7f050005;
     }
 }

@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class Petition_Details_db implements Serializable {
 
-	public static int DB_VERSION = 2;
+	public static int DB_VERSION = 1;
 
 	public static String DB_NAME = "petition.db";
 	public static String TABLE_NAME1 = "newpetition";
@@ -204,23 +204,32 @@ public class Petition_Details_db implements Serializable {
 		HashMap<String, Object> returnMap = null;
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 
-		String query_get = "SELECT " + KEY_PETITION_SIGNEE_ID + " , "
-				+ KEY_PETITION_SIGNEE_NAME + " , "
-				+ KEY_PETITION_SIGNEE_IMPORTANCE + " , "
+		// Need to improve this query
+		String query_get = "SELECT " + KEY_PETITION_ID + " , "
+				+ KEY_PETITION_SIGNEE_ID + " , " + KEY_PETITION_SIGNEE_NAME
+				+ " , " + KEY_PETITION_SIGNEE_IMPORTANCE + " , "
 				+ KEY_PETITION_SIGNEE_EMAIL + " , "
-				+ KEY_PETITION_SIGNEE_CONTACT + " FROM " + TABLE_NAME2
-				+ " WHERE " + KEY_PETITION_ID + " = " + pid;
+				+ KEY_PETITION_SIGNEE_CONTACT + " , "
+				+ KEY_PETITION_SIGNEE_SIGNATURE + " , "
+				+ KEY_PETITION_SIGNEE_SYNCED + " FROM " + TABLE_NAME2
+				+ " WHERE " + KEY_PETITION_ID + " = " + pid + " ;";
 		Cursor cursor = db.rawQuery(query_get, null);
 
 		while (cursor.moveToNext()) {
 			returnMap = new HashMap<String, Object>();
-			returnMap.put(KEY_PETITION_SIGNEE_ID, "aruneshmathur1990@gmail.com"
-					+ cursor.getString(0));
-			returnMap.put(KEY_PETITION_SIGNEE_NAME, cursor.getString(1));
-			returnMap.put(KEY_PETITION_SIGNEE_IMPORTANCE, cursor.getString(2));
-			returnMap.put(KEY_PETITION_SIGNEE_EMAIL, cursor.getString(3));
-			returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(4));
-			list.add(returnMap);
+
+			returnMap.put(KEY_PETITION_ID, "aruneshmathur1990@gmail.com" + pid);
+			returnMap.put(KEY_PETITION_SIGNEE_NAME, cursor.getString(2));
+			returnMap.put(KEY_PETITION_SIGNEE_IMPORTANCE, cursor.getString(3));
+			returnMap.put(KEY_PETITION_SIGNEE_EMAIL, cursor.getString(4));
+			returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(5));
+
+			// byte[] signature = cursor.getBlob(6);
+			returnMap.put(KEY_PETITION_SIGNEE_SYNCED, cursor.getString(7));
+			returnMap.put(KEY_PETITION_SIGNEE_ID, cursor.getString(1));
+
+			if (returnMap.get(KEY_PETITION_SIGNEE_SYNCED).equals("0"))
+				list.add(returnMap);
 		}
 
 		cursor.close();
@@ -265,6 +274,8 @@ public class Petition_Details_db implements Serializable {
 	}
 
 	public void deletePetition(String id) {
+		id = (id.contains("aruneshmathur1990@gmail.com") ? id.substring(id
+				.indexOf("com") + 3) : id);
 		String query1 = "DELETE FROM " + TABLE_NAME1 + " WHERE "
 				+ KEY_PETITION_ID + " = " + id;
 		String query2 = "DELETE FROM " + TABLE_NAME2 + " WHERE "
@@ -307,6 +318,13 @@ public class Petition_Details_db implements Serializable {
 		String sql = "UPDATE " + TABLE_NAME1 + " SET " + KEY_PETITION_CREATED
 				+ " = " + "1" + " WHERE " + KEY_PETITION_ID + " = "
 				+ pid.substring(pid.indexOf("com") + 3) + " ;";
+		db.execSQL(sql);
+	}
+
+	public void setSigneeStatus(String sid) {
+		String sql = "UPDATE " + TABLE_NAME2 + " SET "
+				+ KEY_PETITION_SIGNEE_SYNCED + " = " + "1" + " WHERE "
+				+ KEY_PETITION_SIGNEE_ID + " = " + sid + ";";
 		db.execSQL(sql);
 	}
 

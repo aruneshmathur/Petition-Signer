@@ -69,7 +69,7 @@ public class Signee extends Activity {
 				mSendMap.put(Petition_Details_db.KEY_PETITION_SIGNEE_SIGNATURE,
 						(mSignature));
 				mSendMap.put(Petition_Details_db.KEY_PETITION_SIGNEE_SYNCED,
-						"-1");
+						"0");
 
 				database.insertSignee(mSendMap);
 				database.close();

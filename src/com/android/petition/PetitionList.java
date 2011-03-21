@@ -162,6 +162,16 @@ public class PetitionList extends Activity {
 
 				@Override
 				public void onClick(View v) {
+					HashMap<String, String> map = mPetition.get(position);
+					String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
+					database.open();
+					ArrayList<HashMap<String, Object>> sendSigneeList = database
+							.getSigneesForUpload(pid);
+					database.close();
+
+					// Launch SyncTask for the Signees
+					new Signee_SyncTask(getApplicationContext())
+							.execute(sendSigneeList);
 
 				}
 			});
