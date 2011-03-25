@@ -14,10 +14,5 @@
 		android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:text="Email:" android:paddingBottom="10dip" />
 
-	<ImageView android:src="@drawable/not_synced"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_alignParentRight="true" android:paddingTop="20dip"
-		android:paddingRight="5dip" />
-
 </RelativeLayout>
 

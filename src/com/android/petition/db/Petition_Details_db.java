@@ -10,6 +10,8 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.android.petition.ByteArrayWrapper;
+
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
@@ -224,7 +226,10 @@ public class Petition_Details_db implements Serializable {
 			returnMap.put(KEY_PETITION_SIGNEE_EMAIL, cursor.getString(4));
 			returnMap.put(KEY_PETITION_SIGNEE_CONTACT, cursor.getString(5));
 
-			// byte[] signature = cursor.getBlob(6);
+			byte[] signature = cursor.getBlob(6);
+			ArrayList<byte[]> temp_list = new ArrayList<byte[]>();
+			temp_list.add(signature);
+			returnMap.put(KEY_PETITION_SIGNEE_SIGNATURE, temp_list);
 			returnMap.put(KEY_PETITION_SIGNEE_SYNCED, cursor.getString(7));
 			returnMap.put(KEY_PETITION_SIGNEE_ID, cursor.getString(1));
 
