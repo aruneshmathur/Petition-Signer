@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class Petition_Details_db implements Serializable {
 
-	public static int DB_VERSION = 4;
+	public static int DB_VERSION = 3;
 
 	public static String DB_NAME = "petition.db";
 	public static String TABLE_NAME1 = "newpetition";

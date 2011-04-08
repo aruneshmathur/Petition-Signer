@@ -2,15 +2,15 @@
 <resources>
 	<string name="hello">Hello World, Main!</string>
 	<string name="app_name">Petition Signer</string>
-	<string name="petition_send_failed">Error sending Petition, stored offline to send
+	<string name="petition_send_failed">Error sending Petition, stored off-line to send
 		later!</string>
 	<string name="petition_server_failed">Reached the server, but the server failed to
 		store!
 	</string>
-	<string name="petition_send_success">Success!</string>
-	<string name="signee_send_success">Success!</string>
-	<string name="signee_send_failure">Failure!</string>
+	<string name="petition_send_success">Successfully created petition!</string>
+	<string name="signee_send_success">Successfully synced signees!</string>
+	<string name="signee_send_failure">Failure syncing signees!</string>
 	<string name="petition_delete_failure">Failed to delete petition!</string>
-	<string name="petition_delete_communication_failure">Went wrong while deleting!</string>
-	<string name="petition_delete_sucess">Deleted!</string>
+	<string name="petition_delete_communication_failure">Error while deleting!</string>
+	<string name="petition_delete_sucess">Successfully deleted petition!</string>
 </resources>

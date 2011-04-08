@@ -18,8 +18,7 @@
 		</activity>
 		<activity android:name=".Create" android:label="@string/app_name"
 			android:theme="@android:style/Theme.NoTitleBar"
-
-			android:windowSoftInputMode="adjustPan">
+			android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
 		</activity>
 
 		<activity android:name=".SigneeList" android:label="@string/app_name"
@@ -27,9 +26,10 @@
 		</activity>
 
 		<activity android:name=".Signee" android:label="@string/app_name"
-			android:windowSoftInputMode="adjustPan" android:theme="@android:style/Theme.NoTitleBar">
+			android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan"
+			android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
-		
+
 		<activity android:name=".Signature" android:label="@string/app_name"
 			android:windowSoftInputMode="adjustPan" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>

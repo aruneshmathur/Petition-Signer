@@ -41,10 +41,10 @@
 				android:textColor="@color/black" />
 			<EditText android:layout_width="fill_parent" android:hint="EmailId"
 				android:tag="signeemail" android:layout_height="wrap_content"
-				android:inputType="textUri" />
+				android:inputType="textEmailAddress" />
 			<EditText android:layout_width="fill_parent" android:hint="Contact"
 				android:tag="signeeContact" android:layout_height="wrap_content"
-				android:inputType="textCapSentences" />
+				android:inputType="phone" />
 		</LinearLayout>
 	</ScrollView>
 

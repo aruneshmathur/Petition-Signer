@@ -42,13 +42,14 @@
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:background="@null" android:layout_weight="1"
 				android:layout_gravity="center_vertical" android:textStyle="bold"
-				android:tag="Mail" android:onClick="onClick" />
+				android:tag="Mail" android:onClick="onClick" android:visibility="gone" />
 			<Button android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:text="Settings"
-				android:drawableTop="@drawable/home_settings_selector" android:textAppearance="?android:attr/textAppearanceSmall"
+				android:drawableTop="@drawable/home_settings_selector"
+				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:background="@null" android:layout_weight="1"
 				android:layout_gravity="center_vertical" android:textStyle="bold"
-				android:tag="Settings" android:onClick="onClick" />
+				android:tag="Settings" android:onClick="onClick" android:visibility="gone" />
 		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>
