@@ -5,8 +5,12 @@
 	<string name="petition_send_failed">Error sending Petition, stored offline to send
 		later!</string>
 	<string name="petition_server_failed">Reached the server, but the server failed to
-		store!</string>
-		<string name="petition_send_success">Success!</string>
-		<string name="signee_send_success">Success!</string>
-		<string name="signee_send_failure">Failure!</string>
+		store!
+	</string>
+	<string name="petition_send_success">Success!</string>
+	<string name="signee_send_success">Success!</string>
+	<string name="signee_send_failure">Failure!</string>
+	<string name="petition_delete_failure">Failed to delete petition!</string>
+	<string name="petition_delete_communication_failure">Went wrong while deleting!</string>
+	<string name="petition_delete_sucess">Deleted!</string>
 </resources>

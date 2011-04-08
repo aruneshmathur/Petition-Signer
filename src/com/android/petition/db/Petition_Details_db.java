@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class Petition_Details_db implements Serializable {
 
-	public static int DB_VERSION = 1;
+	public static int DB_VERSION = 4;
 
 	public static String DB_NAME = "petition.db";
 	public static String TABLE_NAME1 = "newpetition";
@@ -40,6 +40,7 @@ public class Petition_Details_db implements Serializable {
 	public static String KEY_PETITION_SIGNED = "petitionSigned";
 	public static String KEY_PETITION_CREATED = "petitionCreated";
 	public static String KEY_PETITION_SYNCED = "petitionSynced";
+	public static String KEY_PETITION_SENDING = "petitionSending";
 
 	public static String KEY_PETITION_SIGNEE_ID = "signeeID";
 	public static String KEY_PETITION_SIGNEE_NAME = "signeeName";
@@ -54,7 +55,8 @@ public class Petition_Details_db implements Serializable {
 			+ " TEXT NOT NULL, " + KEY_PETITION_SUMMARY + " TEXT NOT NULL, "
 			+ KEY_PETITION_WEB + " TEXT, " + KEY_PETITION_COUNTRY + " TEXT, "
 			+ KEY_PETITION_SIGNED + " TEXT, " + KEY_PETITION_CREATED
-			+ " STRING, " + KEY_PETITION_SYNCED + " TEXT" + ");";
+			+ " STRING, " + KEY_PETITION_SYNCED + " TEXT, "
+			+ KEY_PETITION_SENDING + " TEXT " + ");";
 
 	private static String DB_CREATE2 = "CREATE TABLE " + TABLE_NAME2 + " ( "
 			+ KEY_PETITION_ID + " TEXT, " + KEY_PETITION_SIGNEE_ID + " TEXT, "
@@ -84,6 +86,7 @@ public class Petition_Details_db implements Serializable {
 	}
 
 	public void insertPetition(HashMap<String, String> map) {
+		map.put(KEY_PETITION_SENDING, "0");
 
 		String query_frame = "INSERT INTO " + TABLE_NAME1 + " ( ";
 		String query_values = "";
@@ -110,7 +113,8 @@ public class Petition_Details_db implements Serializable {
 				+ KEY_PETITION_TITLE + " , " + KEY_PETITION_SIGNED + " , "
 				+ KEY_PETITION_CREATED + " , " + KEY_PETITION_SYNCED + " , "
 				+ KEY_PETITION_SUMMARY + " , " + KEY_PETITION_WEB + " , "
-				+ KEY_PETITION_COUNTRY + " FROM " + TABLE_NAME1 + ";";
+				+ KEY_PETITION_COUNTRY + " , " + KEY_PETITION_SENDING
+				+ " FROM " + TABLE_NAME1 + ";";
 		Cursor cursor = db.rawQuery(query_get, null);
 
 		while (cursor.moveToNext()) {
@@ -123,7 +127,7 @@ public class Petition_Details_db implements Serializable {
 			returnMap.put(KEY_PETITION_SUMMARY, cursor.getString(5));
 			returnMap.put(KEY_PETITION_WEB, cursor.getString(6));
 			returnMap.put(KEY_PETITION_COUNTRY, cursor.getString(7));
-
+			returnMap.put(KEY_PETITION_SENDING, cursor.getString(8));
 			list.add(returnMap);
 		}
 
@@ -287,6 +291,14 @@ public class Petition_Details_db implements Serializable {
 				+ KEY_PETITION_ID + " = " + id;
 		db.execSQL(query1);
 		db.execSQL(query2);
+	}
+
+	public void updatePetitionXmlrpcStatus(String pid, String status) {
+		pid = (pid.contains("aruneshmathur1990@gmail.com") ? pid.substring(pid
+				.indexOf("com") + 3) : pid);
+		String query = "UPDATE " + TABLE_NAME1 + " SET " + KEY_PETITION_SENDING
+				+ " = " + status + " WHERE " + KEY_PETITION_ID + " = " + pid;
+		db.execSQL(query);
 	}
 
 	public void deleteSignee(String id) {

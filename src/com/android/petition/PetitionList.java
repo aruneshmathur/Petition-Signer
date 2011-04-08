@@ -7,6 +7,7 @@ import com.android.petition.db.Petition_Details_db;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -59,9 +60,12 @@ public class PetitionList extends Activity {
 			ContextMenuInfo menuInfo) {
 		if (v.getId() == R.id.petitionlist) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			menu.setHeaderTitle(mPetition.get(info.position).get(
-					Petition_Details_db.KEY_PETITION_TITLE));
-			menu.add(Menu.NONE, 0, 0, "Delete");
+			if (mPetition.get(info.position)
+					.get(Petition_Details_db.KEY_PETITION_SENDING).equals("0")) {
+				menu.setHeaderTitle(mPetition.get(info.position).get(
+						Petition_Details_db.KEY_PETITION_TITLE));
+				menu.add(Menu.NONE, 0, 0, "Delete");
+			}
 		}
 	}
 
@@ -73,12 +77,11 @@ public class PetitionList extends Activity {
 		if (menuItemIndex == 0) {
 			HashMap<String, String> map = mPetition.get(info.position);
 			String pid = map.get(Petition_Details_db.KEY_PETITION_ID);
-			database.open();
-			database.deletePetition(pid);
-			mPetition.remove(info.position);
+			map.put(Petition_Details_db.KEY_PETITION_SENDING, "1");
 			((PetitionListViewAdapter) mPetitionList.getAdapter())
 					.notifyDataSetChanged();
-			database.close();
+			new Petition_DeleteTask(getApplicationContext())
+					.execute("aruneshmathur1990@gmail.com" + pid);
 		}
 
 		return true;
@@ -202,6 +205,12 @@ public class PetitionList extends Activity {
 					return false;
 				}
 			});
+
+			if (mPetition.get(position)
+					.get(Petition_Details_db.KEY_PETITION_SENDING).equals("1")) {
+				convertView.setBackgroundColor(R.color.yellow);
+				convertView.setEnabled(false);
+			}
 
 			return convertView;
 		}

@@ -84,7 +84,6 @@ public class Petition_SyncTask extends
 			result_received = client.invoke(
 					"PetitionServer.requestCreatePetition",
 					new Object[] { maps[0] });
-			System.currentTimeMillis();
 
 		} catch (XmlRpcException e) {
 			e.printStackTrace();
